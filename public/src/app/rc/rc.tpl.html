@@ -1,0 +1,59 @@
+<h1>Remote Control</h1>
+
+<div class="row">
+	<div class="col-sm-4">
+		<h2>Desired</h2>
+
+		<h3>Overall</h3>
+
+		<div class="row" style="height:100px;">
+			<div class="col-md-6">
+				<ttg-just-gage id="desiredSpeedGage" class="200x160px" min=-100 max=100 value="desiredSpeed" title="Speed"></ttg-just-gage>
+			</div>
+			<div class="col-md-6">
+				<ttg-just-gage id="desiredDirectionGage" class="200x160px" min=-100 max=100 value="desiredDirection" title="Direction"></ttg-just-gage>
+			</div>
+		</div>
+
+		<h3>Motors</h3>
+
+		<div class="row" style="height:100px;">
+			<div class="col-md-6">
+				<ttg-just-gage id="desiredLeftSpeedGage" class="200x160px" min=-100 max=100 value="leftMotor.desiredSpeed" title="Left"></ttg-just-gage>
+			</div>
+			<div class="col-md-6">
+				<ttg-just-gage id="desiredRightSpeedGage" class="200x160px" min=-100 max=100 value="rightMotor.desiredSpeed" title="Right"></ttg-just-gage>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-sm-4">
+		<h2>Actual</h2>
+
+		<h3>Overall</h3>
+
+		<div class="row" style="height:100px;">
+			<div class="col-md-6">
+				<ttg-just-gage id="actualSpeedGage" class="200x160px" min=-100 max=100 value="actualSpeed" title="Speed"></ttg-just-gage>
+			</div>
+			<div class="col-md-6">
+				<ttg-just-gage id="actualDirectionGage" class="200x160px" min=-100 max=100 value="actualDirection" title="Direction"></ttg-just-gage>
+			</div>
+		</div>
+
+		<h3>Motors</h3>
+
+		<div class="row" style="height:100px;">
+			<div class="col-md-6">
+				<ttg-just-gage id="actualLeftSpeedGage" class="200x160px" min=-100 max=100 value="leftMotor.actualSpeed" title="Left ({{leftMotor.actualRpm}} RPM)"></ttg-just-gage>
+			</div>
+			<div class="col-md-6">
+				<ttg-just-gage id="actualRightSpeedGage" class="200x160px" min=-100 max=100 value="rightMotor.actualSpeed" title="Right ({{leftMotor.actualRpm}} RPM)"></ttg-just-gage>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-sm-4">
+
+	</div>
+</div>

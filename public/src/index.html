@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app="ngBoilerplate" ng-controller="AppCtrl">
+<head>
+	<title ng-bind="pageTitle"></title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CDN -->
+	<link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
+	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.css" rel="stylesheet">
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-utils/0.1.1/angular-ui-utils.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+	<link rel="stylesheet" type="text/css" href="<%= file %>" />
+	<% }); %>
+
+	<!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+	<script type="text/javascript" src="<%= file %>"></script>
+	<% }); %>
+
+</head>
+<body>
+<div class="container">
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" ng-init="menuCollapsed = true"
+			        ng-click="menuCollapsed = ! menuCollapsed">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<div class="navbar-brand">
+				TTGBot
+				<small>
+					v<%= version %>
+				</small>
+			</div>
+		</div>
+		<div class="collapse navbar-collapse" collapse="menuCollapsed">
+			<ul class="nav navbar-nav">
+				<li ui-sref-active="active">
+					<a href ui-sref="home">
+						<i class="fa fa-home"></i>
+						Home
+					</a>
+				</li>
+				<li ui-sref-active="active">
+					<a href ui-sref="rc">
+						<i class="fa fa-car"></i>
+						Remote Control
+					</a>
+				</li>
+				<li>
+					<a href="https://bitbucket.org/the7thGhost/ttgbot/wiki/Home">
+						<i class="fa fa-book"></i>
+						Wiki
+					</a>
+				</li>
+				<li>
+					<a href="https://bitbucket.org/the7thGhost/ttgbot/src">
+						<i class="fa fa-bitbucket"></i>
+						Bitbucket
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="container" ui-view="main"></div>
+
+<footer class="footer">
+	<div class="container">
+		<div class="footer-inner">
+			<p>
+				TTGBot is the senior design project of Paul Rayes and Vanessa Martinez<br />
+				School of Electrical, Computer and Energy Engineering | Ira A. Fulton Schools of Engineering | Arizona State University<br />
+				Back-end/Robot: Node.js on a BeagleBone Black<br />
+				Front-end:
+				<a href="http://www.angularjs.org">AngularJS</a>,
+				<a href="http://getbootstrap.com">Bootstrap</a>,
+				<a href="http://angular-ui.github.com/bootstrap">UI Bootstrap</a>,
+				and
+				<a href="http://fortawesome.github.com/Font-Awesome">Font Awesome</a>.
+			</p>
+		</div>
+	</div>
+</footer>
+</body>
+</html>

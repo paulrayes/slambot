@@ -1,0 +1,30 @@
+{
+
+	"camelcase": true,
+	"curly": true,
+	"eqeqeq": true,
+	"freeze": true,
+	"immed": true,
+	"latedef": true,
+	"newcap": true,
+	"noarg": true,
+	"noempty": true,
+	"nonbsp": true,
+	"nonew": true,
+	"quotmark": "single",
+	"undef": true,
+	"unused": "vars",
+	"strict": true,
+	"trailing": true,
+	"maxparams": 4,
+	"maxcomplexity": 8,
+	"maxlen": 120,
+	"smarttabs": true,
+
+	"browser": true,
+
+	"globals": {
+		"console": true,
+		"angular": true
+	}
+}
