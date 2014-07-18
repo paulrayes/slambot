@@ -30,15 +30,12 @@ angular.module('ngBoilerplate', [
 		 * Update server load statistics in navbar when server sends them
 		 */
 		socketService.on('load', function(data) {
-			var load = Math.round(data.load * 100) / 100;
-			var cpu = Math.round(data.cpu * 10) / 10;
-			var ram = Math.round(data.memory/1024/1024);
-
-			console.log('load: ' + data.load);
-			console.log('cpu: ' + data.cpu + ' %');
-			console.log('ram: ' + data.memory/1024/1024 + ' MB');
-
-			document.querySelector('#load').innerHTML = 'Load: ' + load + ' | CPU: ' + cpu + ' % | RAM: ' + ram + ' MB';
+			$scope.load = {
+				load: data.load,
+				cpu: data.cpu,
+				ram: data.memory/1024/1024 // Convert bytes to MB
+			};
+			$scope.$apply();
 		});
 
 		/**

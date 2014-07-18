@@ -218,7 +218,7 @@ module.exports = function(grunt) {
 					banner: '<%= meta.banner %>'
 				},
 				files: {
-					'<%= concat.compile_js.dest %>': '<%= concat.compileJs.dest %>'
+					'<%= concat.compileJs.dest %>': '<%= concat.compileJs.dest %>'
 				}
 			}
 		},
@@ -231,12 +231,12 @@ module.exports = function(grunt) {
 		less: {
 			build: {
 				files: {
-					'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= appFiles.less %>'
+					'<%= buildDir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= appFiles.less %>'
 				}
 			},
 			compile: {
 				files: {
-					'<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= appFiles.less %>'
+					'<%= buildDir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= appFiles.less %>'
 				},
 				options: {
 					cleancss: true,
@@ -563,7 +563,7 @@ module.exports = function(grunt) {
 	/**
 	 * The default task is to build and compile.
 	 */
-	grunt.registerTask('default', [ 'build', 'delta' ]);
+	grunt.registerTask('default', [ 'build' ]);
 
 	/**
 	 * The `build` task gets your app ready to run for development and testing.

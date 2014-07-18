@@ -61,13 +61,17 @@
 			</ul>
 
 			<!-- Displays robot's load info. Second p is to give it a right-margin. -->
-			<p id="load" class="navbar-text navbar-right">...</p>
+			<p id="load" class="navbar-text navbar-right">
+				Load: {{ load.load|number:2 }} |
+				CPU: {{ load.cpu|number:1 }} % |
+				RAM: {{ load.ram|number:0 }} MB
+			</p>
 			<p class="navbar-text navbar-right"></p>
 		</div>
 	</div>
 </div>
 
-<div class="container" ui-view="main"></div>
+<div id="mainContainer" class="container" ui-view="main"></div>
 
 <footer class="footer">
 	<div class="container">
