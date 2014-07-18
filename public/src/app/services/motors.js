@@ -16,17 +16,17 @@ angular.module('ngBoilerplate.motorsService', [
 		var _actualDirection = 0;
 
 		// Object represents a single motor
-		var Motor = function() {
-			var desiredSpeed = 0;
-			var actualSpeed = 0;
-			var actualRpm = 0;
+		var Motor = {
+			desiredSpeed: 0,
+			actualSpeed: 0,
+			actualRpm: 0
 		};
 
 
 
 		var motorsService = {
-			left: new Motor(),
-			right: new Motor(),
+			left: Object.create(Motor),
+			right: Object.create(Motor),
 
 			get desiredSpeed() {
 				return _desiredSpeed;

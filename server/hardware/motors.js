@@ -1,6 +1,6 @@
-var b = require('bonescript');
+//var b = require('bonescript');
 
-module.exports = function() {
+module.exports = function(io) {
 	'use strict';
 
 	// Speeds are relative to a theoretical maximum speed and thus an actual speed of -100 or 100 is not likely.
@@ -67,7 +67,7 @@ module.exports = function() {
 		},
 
 		emit: function() {
-			global.io.sockets.emit('motors:update', {
+			io.sockets.emit('motors:update', {
 				desiredSpeed: _desiredSpeed,
 				desiredDirection: _desiredDirection,
 				actualSpeed: _actualSpeed,
@@ -79,7 +79,7 @@ module.exports = function() {
 		}
 	};
 
-	global.io.sockets.on('connection', function(socket) {
+	io.sockets.on('connection', function(socket) {
 		console.log('Socket connection established in hardware/motors.js');
 		socket.on('motors:update', function(data) {
 			_desiredSpeed = data.desiredSpeed;

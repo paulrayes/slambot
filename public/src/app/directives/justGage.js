@@ -25,7 +25,7 @@ angular.module('ngBoilerplate.directives', [])
 					});
 
 					scope.$watch('value', function (updatedValue) {
-						g.refresh(updatedValue)
+						g.refresh(updatedValue);
 					}, true);
 				});
 			}

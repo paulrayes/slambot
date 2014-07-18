@@ -30,32 +30,12 @@ angular.module('ngBoilerplate.rc', [
 			return motorsService.desiredSpeed;
 		}, function(value) {
 			$scope.desiredSpeed = value;
-			/*if ($scope.desiredSpeed > 0) {
-			 $scope.desiredSpeedProgressType = 'success';
-			 $scope.desiredSpeedProgressMessage = 'Forward';
-			 } else if ($scope.desiredSpeed === 0) {
-			 $scope.desiredSpeedProgressType = 'info';
-			 $scope.desiredSpeedProgressMessage = 'Stopped';
-			 } else {
-			 $scope.desiredSpeedProgressType = 'warning';
-			 $scope.desiredSpeedProgressMessage = 'Reverse';
-			 }*/
 		});
 
 		$scope.$watch(function() {
 			return motorsService.desiredDirection;
 		}, function(value) {
 			$scope.desiredDirection = value;
-			/*if ($scope.desiredDirection > 0) {
-			 $scope.desiredDirectionProgressType = 'success';
-			 $scope.desiredDirectionProgressMessage = 'Right';
-			 } else if ($scope.desiredDirection === 0) {
-			 $scope.desiredDirectionProgressType = 'info';
-			 $scope.desiredDirectionProgressMessage = 'Straight';
-			 } else {
-			 $scope.desiredDirectionProgressType = 'success';
-			 $scope.desiredDirectionProgressMessage = 'Left';
-			 }*/
 		});
 
 		$scope.$watch(function() {

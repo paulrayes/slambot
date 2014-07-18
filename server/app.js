@@ -1,31 +1,54 @@
-var express = require('express');
-var socketio = require('socket.io');
-var b = require('bonescript');
+(function() {
+	'use strict';
+	// Require our dependencies
+	var socketio = require('socket.io');
+	var b = require('bonescript');
+	var os = require('os');
+	var usage = require('usage');
 
-var port = 8080;
+	// Set up socket.io
+	var port = 8080; // What port the server should run on
+	var io = socketio.listen(port);
 
-// Setup the Express app and start the server
-// This is used to serve all the static content in the public folder
-var app = express();
-app.use(express.static(__dirname + '/../public/build'));
-app.disable('etag');
-var server = app.listen(port, function() {
-	console.log('Express server listening on port ' + port);
-});
+	io.sockets.on('connection', function(socket) {
+		console.log('Socket connection established');
+		emitLoad(0);
+	});
 
-// Setup socket.io on the existing server
-global.io = socketio.listen(server);
+	// Set our status/load/heartbeat pin as an output
+	var led = 'USR0';
+	b.pinMode(led, 'out');
 
-global.io.sockets.on('connection', function(socket) {
-	console.log('Socket connection established');
-});
+	// Every five seconds send the CPU/memory usage out on the socket
+	var pid = process.pid;
+	var emitLoad = function(load) {
+		usage.lookup(pid, { keepHistory: true }, function(err, result) {
+			io.sockets.emit('load', {
+				cpu: result.cpu,
+				memory: result.memory,
+				load: load
+			});
+		});
+	};
+	setInterval(function() {
+		b.digitalWrite(led, 1);
 
-// Flash USR0 led for funsies
-var led = 'USR0';
-b.pinMode(led, 'out');
-b.digitalWrite(led, 1);
-setTimeout(function() {
-	b.digitalWrite(led, 0);
-}, 1000);
+		// Get the load
+		var load = os.loadavg()[0];
+		console.log('Load: ' + load);
 
-var motors = require('./hardware/motors')();
+		emitLoad(load);
+
+		// This is a single core, shouldn't go above 2, but just in case...
+		if (load > 2) {
+			load = 2;
+		}
+
+		setTimeout(function() {
+			b.digitalWrite(led, 0);
+		}, load/2*5000);
+	}, 5000);
+
+	// Require our motors module, it handles all things motors
+	require('./hardware/motors')(io);
+}());

@@ -1,7 +1,8 @@
 angular.module('ngBoilerplate.socketService', [])
 	.factory('socketService', function($rootScope) {
 		'use strict';
-		var socket = io.connect();
+
+		var socket = io.connect(document.querySelector('body').dataset.robothostname);
 
 		return socket;
 

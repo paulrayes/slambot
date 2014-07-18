@@ -9,23 +9,12 @@
 	<link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
 	<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.css" rel="stylesheet">
 
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-utils/0.1.1/angular-ui-utils.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-
 	<!-- compiled CSS --><% styles.forEach( function ( file ) { %>
 	<link rel="stylesheet" type="text/css" href="<%= file %>" />
 	<% }); %>
 
-	<!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
-	<script type="text/javascript" src="<%= file %>"></script>
-	<% }); %>
-
 </head>
-<body>
+<body data-robothostname="<%= robotHostname %>">
 <div class="container">
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-header">
@@ -70,6 +59,10 @@
 					</a>
 				</li>
 			</ul>
+
+			<!-- Displays robot's load info. Second p is to give it a right-margin. -->
+			<p id="load" class="navbar-text navbar-right">...</p>
+			<p class="navbar-text navbar-right"></p>
 		</div>
 	</div>
 </div>
@@ -93,5 +86,20 @@
 		</div>
 	</div>
 </footer>
+
+<!-- Scripts at the bottom for performance reasons -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-utils/0.1.1/angular-ui-utils.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script src="<%= robotHostname %>/socket.io/socket.io.js"></script>
+<script src="//localhost:35729/livereload.js"></script>
+
+<!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+<script type="text/javascript" src="<%= file %>"></script>
+<% }); %>
+
 </body>
 </html>
