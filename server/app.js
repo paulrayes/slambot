@@ -1,5 +1,6 @@
 (function() {
 	'use strict';
+
 	// Require our dependencies
 	var socketio = require('socket.io');
 	var b = require('bonescript');
@@ -9,6 +10,12 @@
 	// Set up socket.io
 	var port = 8080; // What port the server should run on
 	var io = socketio.listen(port);
+
+	io.configure(function(){
+		io.set('transports', [             // disable all transports except websocket
+			'websocket'//, 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling'
+		]);
+	});
 
 	io.sockets.on('connection', function(socket) {
 		console.log('Socket connection established');
