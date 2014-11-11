@@ -5,8 +5,7 @@
 	"private": true,
 	"dependencies": {
 		"socket.io": "0.9.x",
-		"bonescript": "0.2.x",
-		"usage": "0.4.x"
+		"bonescript": "0.2.x"
 	},
 	"scripts": {
 		"start": "forever --debug --verbose --watch app.js"

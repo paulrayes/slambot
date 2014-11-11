@@ -15,6 +15,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-conventional-changelog');
 	grunt.loadNpmTasks('grunt-bump');
+	grunt.loadNpmTasks('grunt-shell');
 	//grunt.loadNpmTasks('grunt-coffeelint');
 	//grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-ngmin');
@@ -270,17 +271,17 @@ module.exports = function(grunt) {
 					'Gruntfile.js'
 				],
 				options: {
-					jshintrc: '../server/.jshintrc'
+					jshintrc: '../robot/.jshintrc'
 				}
 			},
-			server: {
+			robot: {
 				src: [
-					'../server/*.js',
-					'../server/{,/*}/*.js'
+					'../robot/*.js',
+					'../robot/{,/*}/*.js'
 				],
 				options: {
-					jshintrc: '../server/.jshintrc',
-					ignores: ['../server/node_modules']
+					jshintrc: '../robot/.jshintrc',
+					ignores: ['../robot/node_modules']
 				}
 			}
 		},
@@ -386,8 +387,17 @@ module.exports = function(grunt) {
 			}
 		},*/
 
+
+		shell: {
+			rsync: {
+				command: 'rsync -avz -e "ssh -i /home/paul/.ssh/bbb -o StrictHostKeyChecking=no -o' +
+				'UserKnownHostsFile=/dev/null" --progress --recursive --delete --exclude=.git* ' +
+				'--exclude=node_modules ./../robot/ ubuntu@arm.local:/home/ubuntu/robot'
+			}
+		},
+
 		/**
-		 * This copies server files to the robot using rsync whenever they change.
+		 * This copies robot files to the robot using rsync whenever they change.
 		 *
 		 * rsync opens a new connection to the robot every time it needs to do this, which can be very slow. To remedy
 		 * this, edit your ~/.ssh/config file and add the following:
@@ -405,10 +415,10 @@ module.exports = function(grunt) {
 				exclude: ['.git*', 'node_modules'],
 				recursive: true
 			},
-			server: {
+			robot: {
 				options: {
-					src: './../server/',
-					dest: secret.sshPath + 'server',
+					src: './../robot/',
+					dest: secret.sshPath + 'robot',
 					host: secret.sshUsername + '@' + secret.sshHost,
 					syncDestIgnoreExcl: true
 				}
@@ -437,11 +447,11 @@ module.exports = function(grunt) {
 			},
 
 			/**
-			 * When server files change, upload them
+			 * When robot files change, upload them
 			 */
 			rsync: {
-				files: '../server/{,*/}*',
-				tasks: [ 'jshint:server', 'rsync:server' ]
+				files: '../robot/{,*/}*',
+				tasks: [ 'jshint:robot', 'shell:rsync' ]
 			},
 
 
@@ -573,7 +583,8 @@ module.exports = function(grunt) {
 		'less:build', 'concat:buildCss',
 		'copy:buildAppAssets', 'copy:buildVendorAssets', 'copy:buildAppJs', 'copy:buildVendorJs',
 		'index:build',
-		'rsync:server'
+		//'rsync:robot'
+		'shell:rsync'
 	]);
 	/*grunt.registerTask('build', [
 		'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'less:build',

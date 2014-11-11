@@ -1,23 +1,24 @@
 {
-	"name": "TTGBot",
-	"version": "0.0.1",
-	"private": true,
-	"dependencies": {
-	},
-	"devDependencies": {
-		"grunt": "~0.4.1",
-		"grunt-contrib-less": "~0.11.0",
-		"grunt-contrib-clean": "^0.4.1",
-		"grunt-contrib-copy": "^0.4.1",
-		"grunt-contrib-jshint": "^0.4.3",
-		"grunt-contrib-concat": "^0.3.0",
-		"grunt-contrib-watch": "^0.4.4",
-		"grunt-contrib-uglify": "^0.2.7",
-		"grunt-ngmin": "0.0.2",
-		"grunt-html2js": "^0.1.9",
-		"grunt-conventional-changelog": "^0.1.2",
-		"grunt-bump": "0.0.6",
-		"grunt-rsync": "~0.6.1",
-		"express": "3.x"
-	}
+  "name": "TTGBot",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "grunt-shell": "~1.1.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-less": "~0.11.0",
+    "grunt-contrib-clean": "^0.4.1",
+    "grunt-contrib-copy": "^0.4.1",
+    "grunt-contrib-jshint": "^0.4.3",
+    "grunt-contrib-concat": "^0.3.0",
+    "grunt-contrib-watch": "^0.4.4",
+    "grunt-contrib-uglify": "^0.2.7",
+    "grunt-ngmin": "0.0.2",
+    "grunt-html2js": "^0.1.9",
+    "grunt-conventional-changelog": "^0.1.2",
+    "grunt-bump": "0.0.6",
+    "grunt-rsync": "~0.6.1",
+    "express": "3.x"
+  }
 }

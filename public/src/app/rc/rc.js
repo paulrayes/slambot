@@ -116,6 +116,20 @@ angular.module('ngBoilerplate.rc', [
 				}
 			}
 		}.bind(this));
+
+		var lastTimestamp = 0;
+
+		setInterval(function() {
+			var gamepad = navigator.getGamepads && navigator.getGamepads()[0];
+			if (gamepad !== undefined) {
+				if (gamepad.timestamp > lastTimestamp) {
+					lastTimestamp = gamepad.timestamp;
+					motorsService.desiredSpeed = -100*gamepad.axes[1];
+					motorsService.desiredDirection = 100*gamepad.axes[0];
+					console.log(gamepad);
+				}
+			}
+		}, 100);
 	})
 
 ;

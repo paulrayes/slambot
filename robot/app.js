@@ -4,8 +4,8 @@
 	// Require our dependencies
 	var socketio = require('socket.io');
 	var b = require('bonescript');
-	var os = require('os');
-	var usage = require('usage');
+	//var os = require('os');
+	//var usage = require('usage');
 
 	// Set up socket.io
 	var port = 8080; // What port the server should run on
@@ -19,7 +19,7 @@
 
 	io.sockets.on('connection', function(socket) {
 		console.log('Socket connection established');
-		emitLoad(0);
+		//emitLoad(0);
 	});
 
 	// Set our status/load/heartbeat pin as an output
@@ -27,7 +27,7 @@
 	b.pinMode(led, 'out');
 
 	// Every five seconds send the CPU/memory usage out on the socket
-	var pid = process.pid;
+	/*var pid = process.pid;
 	var emitLoad = function(load) {
 		usage.lookup(pid, { keepHistory: true }, function(err, result) {
 			io.sockets.emit('load', {
@@ -54,8 +54,8 @@
 		setTimeout(function() {
 			b.digitalWrite(led, 0);
 		}, load/2*5000);
-	}, 5000);
+	}, 5000);*/
 
 	// Require our motors module, it handles all things motors
-	require('./hardware/motors')(io);
+	require('./hardware/motors')(io, b);
 }());
