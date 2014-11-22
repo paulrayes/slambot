@@ -32,14 +32,14 @@ angular.module('ngBoilerplate.motorsService', [
 				return _desiredSpeed;
 			},
 			set desiredSpeed(value) {
-				_desiredSpeed = value;
+				_desiredSpeed = -value/2;
 				this.updateMotors();
 			},
 			get desiredDirection() {
 				return _desiredDirection;
 			},
 			set desiredDirection(value) {
-				_desiredDirection = value;
+				_desiredDirection = -value/2;
 				this.updateMotors();
 			},
 			get actualSpeed() {

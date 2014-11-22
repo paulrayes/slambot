@@ -53,9 +53,12 @@ module.exports = function(io, b) {
 			}
 
 			// desiredSpeed is -100 to 100, make it 0 to 1 instead
-			console.log(this.desiredSpeed);
+			//console.log(this.desiredSpeed);
 			var speed = Math.abs(this.desiredSpeed)/100;
-			console.log(speed);
+			//console.log(speed);
+
+			// Even max speed is too fast, slow it down
+			speed = speed / 2;
 
 			// Tell the motor driver the speed
 			b.analogWrite(this.pwmPin, speed, 2000);
@@ -207,8 +210,8 @@ module.exports = function(io, b) {
 		setTimeout(opticalDone, 1);
 	};
 
-	setTimeout(processOpticalEncoder, 100);
-	setTimeout(opticalDone, 100);
+	//setTimeout(processOpticalEncoder, 100);
+	//setTimeout(opticalDone, 100);
 
 	return motorsService;
 };

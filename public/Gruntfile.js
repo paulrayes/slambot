@@ -390,9 +390,9 @@ module.exports = function(grunt) {
 
 		shell: {
 			rsync: {
-				command: 'rsync -avz -e "ssh -i /home/paul/.ssh/bbb -o StrictHostKeyChecking=no -o' +
+				command: 'rsync -avz -e "ssh -i /home/' + secret.username + '/.ssh/bbb -o StrictHostKeyChecking=no -o' +
 				'UserKnownHostsFile=/dev/null" --progress --recursive --delete --exclude=.git* ' +
-				'--exclude=node_modules ./../robot/ ubuntu@arm.local:/home/ubuntu/robot'
+				'--exclude=node_modules ./../robot/ ubuntu@' + secret.sshHost + ':' + secret.sshPath + 'robot'
 			}
 		},
 

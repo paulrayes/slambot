@@ -1,0 +1,36 @@
+/*
+ * This is a template-generated file from BoneScript
+ */
+
+/dts-v1/;
+/plugin/;
+
+/{
+    compatible = "ti,beaglebone", "ti,beaglebone-black";
+    part_number = "BS_PINMODE_P9_12_0x8";
+
+    exclusive-use =
+        "P9.12",
+        "gpmc_ben1";
+
+    fragment@0 {
+        target = <&am33xx_pinmux>;
+        __overlay__ {
+            bs_pinmode_P9_12_0x8: pinmux_bs_pinmode_P9_12_0x8 {
+                pinctrl-single,pins = <0x078 0x8>;
+            };
+        };
+    };
+
+    fragment@1 {
+        target = <&ocp>;
+        __overlay__ {
+            bs_pinmode_P9_12_0x8_pinmux {
+                compatible = "bone-pinmux-helper";
+                status = "okay";
+                pinctrl-names = "default";
+                pinctrl-0 = <&bs_pinmode_P9_12_0x8>;
+            };
+        };
+    };
+};
