@@ -161,8 +161,9 @@ module.exports = function(io, b) {
 	var oeBDone = false;
 	//var motorMaxVelocity = 2880;
 
-	var processOpticalEncoder = function() {
-		b.digitalRead(opticalEncoderPin1, function(val) {
+
+	function interruptCallback1(x) {
+		b.digitalRead(opticalEncoderPin1, function (val) {
 			if (val !== oeA) {
 				oeA = val.value;
 				if (oeA !== oeB) {
@@ -171,12 +172,9 @@ module.exports = function(io, b) {
 					oeP--;
 				}
 			}
-			oeADone = true;
-			if (oeADone && oeBDone) {
-				oeADone = oeBDone = false;
-				setTimeout(processOpticalEncoder, 1);
-			}
 		});
+	}
+	function interruptCallback2(x) {
 		b.digitalRead(opticalEncoderPin2, function(val) {
 			if (val !== oeB) {
 				oeB = val.value;
@@ -186,32 +184,29 @@ module.exports = function(io, b) {
 					oeP--;
 				}
 			}
-			oeBDone = true;
-			if (oeADone && oeBDone) {
-				oeADone = oeBDone = false;
-				setTimeout(processOpticalEncoder, 1);
-			}
 		});
-	};
+	}
+	b.attachInterrupt(opticalEncoderPin1, true, b.CHANGE, interruptCallback1);
+	b.attachInterrupt(opticalEncoderPin2, true, b.CHANGE, interruptCallback2);
 
 	var opticalDone = function() {
-		if (oePNew !== oeP) {
-			oePNew = oeP;
-			oeTNew = Date.now();
-			var velocity = (oePNew - oePOld) / (oeTNew - oeTOld);
-			oePOld = oePNew;
-			oeTOld = oeTNew;
-			//if (velocity > 0.001) {
-				console.log(velocity*500);
-			motorsService.left.actualSpeed = velocity*500;
-			motorsService.emit();
-			//}
-		}
-		setTimeout(opticalDone, 1);
+
+		oePNew = oeP;
+		oeTNew = Date.now();
+		var velocity = (oePNew - oePOld) / (oeTNew - oeTOld);
+		velocity = (velocity/48)*60000;
+		//48 is the pulse per revolution, 60,000 mili-seconds in minutes
+
+		motorsService.left.actualSpeed = velocity;
+		console.log(velocity);
+		motorsService.emit();
+		oePOld = oePNew;
+		oeTOld = oeTNew;
+
+		setTimeout(opticalDone, 500);
 	};
 
-	//setTimeout(processOpticalEncoder, 100);
-	//setTimeout(opticalDone, 100);
+	setTimeout(opticalDone, 100);
 
 	return motorsService;
 };
