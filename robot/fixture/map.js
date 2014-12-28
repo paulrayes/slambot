@@ -78,40 +78,74 @@ var wallLocations = [
 	]
 ];
 
+//initiate grid, set all values to zero
+var grid = [];
+for (x = -5; x <= 125; x++) {
+	grid[x] = [];
+	for (y = -5; y <= 125; y++) {
+		grid[x][y] = 0;
+	}
+}
+
 //Convert from inches to cm. Each value in wallLocations array is multiplied by 2.54
-for (var k = 0,
-	var kk = wallLocations.length; k < kk; k++) {
-	wallLocations[k][0][0] = wallLocations[k][0][0] * 2.54;
-	wallLocations[k][0][1] = wallLocations[k][0][1] * 2.54;
-	wallLocations[k][1][0] = wallLocations[k][1][0] * 2.54;
-	wallLocations[k][1][1] = wallLocations[k][1][1] * 2.54;
+var x0, x1, y0, y1;
+for (var k = 0, kk = wallLocations.length; k < kk; k++) {
+	x0 = wallLocations[k][0][0] * 2.54;
+	y0 = wallLocations[k][0][1] * 2.54;
+	x1 = wallLocations[k][1][0] * 2.54;
+	y1 = wallLocations[k][1][1] * 2.54;
 
 	//within array, if x = x then its a vertical box, if y = y then its horizonal box
-	if (wallLocations[k][0][0] == wallLocations[k][1][0]) { //if both x's are equal, vertical
+	if (x0 == x1) { //if both x's are equal, vertical
 
-		wallLocations[k][0][0] = wallLocations[k][0][0] - 0.375 * 2.54;
-		wallLocations[k][1][0] = wallLocations[k][1][0] + 0.375 * 2.54;
+		x0 = x0 - 0.375 * 2.54;
+		x1 = x1 + 0.375 * 2.54;
 
 	} else { //if the x's are not equal then its a horizontal box
-		wallLocations[k][0][1] = wallLocations[k][0][1] - 0.375 * 2.54;
-		wallLocations[k][1][1] = wallLocations[k][1][1] + 0.375 * 2.54;
+		y0 = y0 - 0.375 * 2.54;
+		y1 = y1 + 0.375 * 2.54;
 	}
 
-	wallLocations[k][0][0] = Math.round(wallLocations[k][0][0]); //round up value to nearest whole value
-	wallLocations[k][1][0] = Math.round(wallLocations[k][1][0]);
-	wallLocations[k][0][1] = Math.round(wallLocations[k][0][1]);
-	wallLocations[k][1][1] = Math.round(wallLocations[k][1][1]);
+	x0 = Math.round(x0); //round up value to nearest whole value
+	x1 = Math.round(x1);
+	y0 = Math.round(y0);
+	y1 = Math.round(y1);
+	/*console.log({
+		x0: x0,
+		y0: y0,
+		x1: x1,
+		y1: y1
+	});*/
 
-	//create a box from line, start with (x, y) and add/subtract 0.375 to get a box
-	//round up each value to 1. 
-	//for loop 0 to 122 (on x-axis), -1 to 1 (on y-axis), 
-	//set all x,y points to 1
-	// for (var k = 0,
-	// 	var kk = wallLocations.length,
-	// 		k < kk; k++) {
-	// 	wallLocations[k] = wallLocations[k] * 2.54;
-	// 	console.log(“alkdsjflksadjf”);
-	// }
-	// var wallWidth = 0.75 * 2.54;
-	//
-	//
+	for (x = x0; x <= x1; x++) {
+		for (y = y0; y <= y1; y++) {
+			grid[x][y] = 1;
+		}
+	}
+
+	wallLocations[k][0][0] = x0;
+	wallLocations[k][0][1] = y0;
+	wallLocations[k][1][0] = x1;
+	wallLocations[k][1][1] = y1;
+
+}
+
+// Declare string variable with string constructor
+var checkString = new String();
+for (y = 125; y >= -5; y--) { //read left to right, top to bottom
+	for (x = -5; x <= 125; x++) {
+		if (grid[x][y] == 1) {
+			checkString += "X";
+		} else {
+			checkString += " ";
+		}
+	}
+	checkString += "\n";
+}
+console.log("This is verifying the occupancy grid");
+console.log(checkString);
+
+module.exports = {
+	walls: wallLocations,
+	grid: grid
+};
