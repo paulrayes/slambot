@@ -58,4 +58,6 @@
 
 	// Require our motors module, it handles all things motors
 	require('./hardware/motors')(io, b);
+
+	require('./hardware/imu')(io, b);
 }());
