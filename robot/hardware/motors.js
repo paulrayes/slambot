@@ -142,66 +142,115 @@ module.exports = function(io, b) {
 	b.digitalRead('P8_7', function(val) {
 		console.log(val);
 	});*/
-	var opticalEncoderPin1 = 'P8_7';
-	b.pinMode(opticalEncoderPin1, 'in');
-	var opticalEncoderPin2 = 'P8_9';
-	b.pinMode(opticalEncoderPin2, 'in');
+	var opticalEncoderPinLeft1 = 'P8_7';
+	b.pinMode(opticalEncoderPinLeft1, 'in');
+	var opticalEncoderPinLeft2 = 'P8_9';
+	b.pinMode(opticalEncoderPinLeft2, 'in');
+	var opticalEncoderPinRight1 = 'P8_8';
+	b.pinMode(opticalEncoderPinRight1, 'in');
+	var opticalEncoderPinRight2 = 'P8_10';
+	b.pinMode(opticalEncoderPinRight2, 'in');
 
 	//var prev = -1;
 	//var asdf = 0;
-	var oeA = -1;
-	var oeB = -1;
-	//var oeD = 0;
-	var oeP = 0;
-	var oePOld = 0;
-	var oePNew = 0;
-	var oeTNew = Date.now();
-	var oeTOld = oeTNew;
+	var oeALeft = -1;
+	var oeBLeft = -1;
+
+	var oePLeft = 0;
+	var oePOldLeft = 0;
+	var oePNewLeft = 0;
+	var oeTNewLeft = Date.now();
+	var oeTOldLeft = oeTNewLeft;
+
+	var oeARight = -1;
+	var oeBRight = -1;
+
+	var oePRight = 0;
+	var oePOldRight = 0;
+	var oePNewRight = 0;
+	var oeTNewRight = Date.now();
+	var oeTOldRight = oeTNewRight;
+
 	//var oeADone = false;
 	//var oeBDone = false;
 	//var motorMaxVelocity = 2880;
 
 
-	function interruptCallback1(x) {
-		b.digitalRead(opticalEncoderPin1, function (val) {
-			if (val !== oeA) {
-				oeA = val.value;
-				if (oeA !== oeB) {
-					oeP++;
+	function interruptCallbackLeft1(x) {
+		b.digitalRead(opticalEncoderPinLeft1, function (val) {
+			if (val !== oeALeft) {
+				oeALeft = val.value;
+				if (oeALeft !== oeBLeft) {
+					oePLeft++;
 				} else {
-					oeP--;
+					oePLeft--;
 				}
 			}
 		});
 	}
-	function interruptCallback2(x) {
-		b.digitalRead(opticalEncoderPin2, function(val) {
-			if (val !== oeB) {
-				oeB = val.value;
-				if (oeA === oeB) {
-					oeP++;
+	function interruptCallbackLeft2(x) {
+		b.digitalRead(opticalEncoderPinLeft2, function(val) {
+			if (val !== oeBLeft) {
+				oeBLeft = val.value;
+				if (oeALeft === oeBLeft) {
+					oePLeft++;
 				} else {
-					oeP--;
+					oePLeft--;
 				}
 			}
 		});
 	}
-	b.attachInterrupt(opticalEncoderPin1, true, b.CHANGE, interruptCallback1);
-	b.attachInterrupt(opticalEncoderPin2, true, b.CHANGE, interruptCallback2);
+	function interruptCallbackRight1(x) {
+		b.digitalRead(opticalEncoderPinRight1, function(val) {
+			if (val !== oeARight) {
+				oeARight = val.value;
+				if (oeARight === oeBRight) {
+					oePRight++;
+				} else {
+					oePRight--;
+				}
+			}
+		});
+	}
+	function interruptCallbackRight2(x) {
+		b.digitalRead(opticalEncoderPinRight2, function(val) {
+			if (val !== oeBRight) {
+				oeBRight = val.value;
+				if (oeARight === oeBRight) {
+					oePRight++;
+				} else {
+					oePRight--;
+				}
+			}
+		});
+	}
+	b.attachInterrupt(opticalEncoderPinLeft1, true, b.CHANGE, interruptCallbackLeft1);
+	b.attachInterrupt(opticalEncoderPinLeft2, true, b.CHANGE, interruptCallbackLeft2);
+	b.attachInterrupt(opticalEncoderPinRight1, true, b.CHANGE, interruptCallbackRight1);
+	b.attachInterrupt(opticalEncoderPinRight2, true, b.CHANGE, interruptCallbackRight2);
 
 	var opticalDone = function() {
 
-		oePNew = oeP;
-		oeTNew = Date.now();
-		var velocity = (oePNew - oePOld) / (oeTNew - oeTOld);
-		velocity = (velocity/48)*60000;
-		//48 is the pulse per revolution, 60,000 mili-seconds in minutes
+		oePNewLeft = oePLeft;
+		oeTNewLeft = Date.now();
+		var velocityLeft = (oePNewLeft - oePOldLeft) / (oeTNewLeft - oeTOldLeft);
+		velocityLeft = (velocityLeft/48)*60000;
+		//48 is the pulse per revolution, 60,000 milliseconds in minutes
 
-		motorsService.left.actualSpeed = velocity;
-		console.log(velocity);
+		oePNewRight = oePRight;
+		oeTNewRight = Date.now();
+		var velocityRight = (oePNewRight - oePOldRight) / (oeTNewRight - oeTOldRight);
+		velocityRight = (velocityRight/48)*60000;
+
+		motorsService.left.actualRpm = velocityLeft;
+		motorsService.right.actualRpm = velocityRight;
+
+		console.log(velocityLeft + ' ' + velocityRight);
 		motorsService.emit();
-		oePOld = oePNew;
-		oeTOld = oeTNew;
+		oePOldLeft = oePNewLeft;
+		oeTOldLeft = oeTNewLeft;
+		oePOldRight = oePNewRight;
+		oeTOldRight = oeTNewRight;
 
 		setTimeout(opticalDone, 500);
 	};
