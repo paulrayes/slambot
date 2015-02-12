@@ -390,9 +390,13 @@ module.exports = function(grunt) {
 
 		shell: {
 			rsync: {
-				command: 'rsync -avz -e "ssh -o StrictHostKeyChecking=no -o' +
+				command: 'rsync -avz -e "sshpass -p ' + secret.password + ' ssh -o StrictHostKeyChecking=no -o' +
 				'UserKnownHostsFile=/dev/null" --progress --recursive --delete --exclude=.git* ' +
 				'--exclude=node_modules ./../robot/ ubuntu@' + secret.sshHost + ':' + secret.sshPath + 'robot'
+			},
+			ssh: {
+				command: 'echo "sshpass -p ' + secret.password +  ' ssh -o StrictHostKeyChecking=no -o' +
+				'UserKnownHostsFile=/dev/null ubuntu@' + secret.sshHost + '"'
 			}
 		},
 
@@ -601,6 +605,8 @@ module.exports = function(grunt) {
 		'less:compile', 'copy:compileAssets', 'ngmin', 'concat:compileJs', 'uglify', 'index:compile'
 	]);
 
+	grunt.registerTask('ssh', ['shell:ssh']);
+
 	/**
 	 * A utility function to get all app JavaScript sources.
 	 */
@@ -641,7 +647,7 @@ module.exports = function(grunt) {
 						scripts: jsFiles,
 						styles: cssFiles,
 						version: grunt.config('pkg.version'),
-						robotHostname: secret.robotHostname
+						robotHostname: '//' + secret.sshHost + ':8080'
 					}
 				});
 			}
