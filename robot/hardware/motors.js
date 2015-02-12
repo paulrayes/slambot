@@ -157,8 +157,8 @@ module.exports = function(io, b) {
 	var oePNew = 0;
 	var oeTNew = Date.now();
 	var oeTOld = oeTNew;
-	var oeADone = false;
-	var oeBDone = false;
+	//var oeADone = false;
+	//var oeBDone = false;
 	//var motorMaxVelocity = 2880;
 
 

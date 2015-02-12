@@ -1,7 +1,7 @@
 var wallLocations = [
 	[
 		// vertical wall locations
-		// read from pauls map drawing bottom to top, left to right 
+		// read from pauls map drawing bottom to top, left to right
 		[0, 0],
 		[0, 48]
 	],
@@ -39,7 +39,7 @@ var wallLocations = [
 	//*********
 	//
 	// horizontal wall locations
-	// read from pauls map drawing bottom to top, left to right 
+	// read from pauls map drawing bottom to top, left to right
 	[
 		[0, 0],
 		[48, 0]
@@ -53,8 +53,8 @@ var wallLocations = [
 		[14, 20]
 	],
 	[
-		[16, 20],
-		[32, 20]
+		[24, 20],
+		[40, 20]
 	],
 	[
 		[0, 28],
@@ -80,9 +80,9 @@ var wallLocations = [
 
 //initiate grid, set all values to zero
 var grid = [];
-for (x = -5; x <= 125; x++) {
+for (var x = -5; x <= 125; x++) {
 	grid[x] = [];
-	for (y = -5; y <= 125; y++) {
+	for (var y = -5; y <= 125; y++) {
 		grid[x][y] = 0;
 	}
 }
@@ -96,7 +96,7 @@ for (var k = 0, kk = wallLocations.length; k < kk; k++) {
 	y1 = wallLocations[k][1][1] * 2.54;
 
 	//within array, if x = x then its a vertical box, if y = y then its horizonal box
-	if (x0 == x1) { //if both x's are equal, vertical
+	if (x0 === x1) { //if both x's are equal, vertical
 
 		x0 = x0 - 0.375 * 2.54;
 		x1 = x1 + 0.375 * 2.54;
@@ -131,19 +131,19 @@ for (var k = 0, kk = wallLocations.length; k < kk; k++) {
 }
 
 // Declare string variable with string constructor
-var checkString = new String();
-for (y = 125; y >= -5; y--) { //read left to right, top to bottom
-	for (x = -5; x <= 125; x++) {
-		if (grid[x][y] == 1) {
-			checkString += "X";
+var checkString = '';
+for (var y = 125; y >= -5; y--) { //read left to right, top to bottom
+	for (var x = -5; x <= 125; x++) {
+		if (grid[x][y] === 1) {
+			checkString += 'X';
 		} else {
-			checkString += " ";
+			checkString += ' ';
 		}
 	}
-	checkString += "\n";
+	checkString += '\n';
 }
-console.log("This is verifying the occupancy grid");
-console.log(checkString);
+//console.log('This is verifying the occupancy grid');
+//console.log(checkString);
 
 module.exports = {
 	walls: wallLocations,
