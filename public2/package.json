@@ -12,7 +12,9 @@
     "browserify:watch": "watchify -t reactify lib/index.js -o build/bundle.js --full-paths -v",
     "less": "lessc lib/less/main.less > build/main.css",
     "less:watch": "watch \"npm run less\" lib/less",
-    "disc": "discify build/bundle.js > build/disc.html"
+    "disc": "discify build/bundle.js > build/disc.html",
+    "rsync": "node ./bin/rsync.js",
+    "ssh": "node ./bin/ssh.js"
   },
   "devDependencies": {
     "watch": "^0.13.0",
@@ -22,12 +24,13 @@
     "disc": "~1.3.1"
   },
   "dependencies": {
+    "bootstrap": "~3.1.0",
     "events": "^1.0.2",
     "express": "3.x",
     "flux": "^2.0.1",
     "object-assign": "^2.0.0",
     "react": "~0.12.2",
-    "socket.io": "0.9.x",
-    "bootstrap": "~3.1.0"
+    "shelljs": "^0.3.0",
+    "socket.io": "0.9.x"
   }
 }
