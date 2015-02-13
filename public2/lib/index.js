@@ -2,7 +2,7 @@ var React = require('react');
 
 var Header = require('./components/Header');
 var Footer = require('./components/Footer');
-var Map = require('./components/Map');
+var Map = require('./components/Map/Map');
 var SpeedVisualization = require('./components/SpeedVisualization');
 var OverallSpeed = require('./components/OverallSpeed');
 var MotorSpeed = require('./components/MotorSpeed');

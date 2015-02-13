@@ -1,7 +1,5 @@
 var React = require('react');
 
-var KnownMapStore = require('../stores/KnownMapStore');
-
 module.exports = React.createClass({
 	render: function() {
 		var mapHeight = this.props.height;
@@ -9,7 +7,7 @@ module.exports = React.createClass({
 
 		// Get the wall positions from the store and create SVG elements for
 		// each of them.
-		var walls = KnownMapStore.getWalls();
+		/*var walls = KnownMapStore.getWalls();
 		var wallLines = {};
 		var key = 0;
 		walls.forEach(function(wall) {
@@ -28,11 +26,22 @@ module.exports = React.createClass({
 			);
 
 			key++;
-		});
+		});*/
+
+		var cursor = this.props.cursor;
+		var text = '(' + Math.round(cursor.x) + ', ' + Math.round(mapHeight-cursor.y) + 'cm)';
+
+		if (cursor.x > mapWidth - 25) {
+			cursor.x = cursor.x - 25;
+		}
 
 		return (
-			<g>
-				{wallLines}
+			<g fill="#333">
+				<text
+						x={this.props.cursor.x+5}
+						y={this.props.cursor.y+3}
+						fontSize="3">
+					{text}</text>
 			</g>
 		);
 	}

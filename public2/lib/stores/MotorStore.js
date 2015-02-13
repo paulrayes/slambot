@@ -41,19 +41,19 @@ var MotorStore = assign({}, EventEmitter.prototype, {
 });
 
 socket.on('motors:update', function(newData) {
-	data.desiredSpeed = newData.desiredSpeed;
-	data.desiredDirection = newData.desiredDirection;
+	MotorStore.data.desiredSpeed = newData.desiredSpeed;
+	MotorStore.data.desiredDirection = newData.desiredDirection;
 
-	data.actualSpeed = newData.actualSpeed;
-	data.actualDirection = newData.actualDirection;
+	MotorStore.data.actualSpeed = newData.actualSpeed;
+	MotorStore.data.actualDirection = newData.actualDirection;
 
-	data.left.desiredSpeed = newData.left.desiredSpeed;
-	data.left.actualSpeed = newData.left.actualSpeed;
-	data.left.actualRpm = newData.left.actualRpm;
+	MotorStore.data.left.desiredSpeed = newData.left.desiredSpeed;
+	MotorStore.data.left.actualSpeed = newData.left.actualSpeed;
+	MotorStore.data.left.actualRpm = newData.left.actualRpm;
 
-	data.right.desiredSpeed = newData.right.desiredSpeed;
-	data.right.actualSpeed = newData.right.actualSpeed;
-	data.right.actualRpm = newData.right.actualRpm;
+	MotorStore.data.right.desiredSpeed = newData.right.desiredSpeed;
+	MotorStore.data.right.actualSpeed = newData.right.actualSpeed;
+	MotorStore.data.right.actualRpm = newData.right.actualRpm;
 
 	MotorStore.setVectors();
 	MotorStore.emit('change');
@@ -70,23 +70,23 @@ window.addEventListener('keydown', function(event) {
 	var key = keyCodes[event.which];
 	if (typeof key !== 'undefined') {
 		if (key === 'w') {
-			if (data.desiredSpeed !== 100) {
-				data.desiredSpeed = 100;
+			if (MotorStore.data.desiredSpeed !== 100) {
+				MotorStore.data.desiredSpeed = 100;
 				MotorStore.updateMotors();
 			}
 		} else if (key === 's') {
-			if (data.desiredSpeed !== -100) {
-				data.desiredSpeed = -100;
+			if (MotorStore.data.desiredSpeed !== -100) {
+				MotorStore.data.desiredSpeed = -100;
 				MotorStore.updateMotors();
 			}
 		} else if (key === 'a') {
-			if (data.desiredDirection !== -100) {
-				data.desiredDirection = -100;
+			if (MotorStore.data.desiredDirection !== -100) {
+				MotorStore.data.desiredDirection = -100;
 				MotorStore.updateMotors();
 			}
 		} else if (key === 'd') {
-			if (data.desiredDirection !== 100) {
-				data.desiredDirection = 100;
+			if (MotorStore.data.desiredDirection !== 100) {
+				MotorStore.data.desiredDirection = 100;
 				MotorStore.updateMotors();
 			}
 		}
@@ -104,13 +104,13 @@ window.addEventListener('keyup', function(event) {
 	var key = keyCodes[event.which];
 	if (typeof key !== 'undefined') {
 		if (key === 'w' || key === 's') {
-			if (data.desiredSpeed !== 0) {
-				data.desiredSpeed = 0;
+			if (MotorStore.data.desiredSpeed !== 0) {
+				MotorStore.data.desiredSpeed = 0;
 				MotorStore.updateMotors();
 			}
 		} else if (key === 'a' || key === 'd') {
-			if (data.desiredDirection !== 0) {
-				data.desiredDirection = 0;
+			if (MotorStore.data.desiredDirection !== 0) {
+				MotorStore.data.desiredDirection = 0;
 				MotorStore.updateMotors();
 			}
 		}
@@ -125,8 +125,8 @@ window.addEventListener('keyup', function(event) {
 		if (gamepad !== undefined) {
 			if (gamepad.timestamp > lastTimestamp) {
 				lastTimestamp = gamepad.timestamp;
-				data.desiredSpeed = Math.round(-50*gamepad.axes[1]);
-				data.desiredDirection = Math.round(50*gamepad.axes[0]);
+				MotorStore.data.desiredSpeed = Math.round(-50*gamepad.axes[1]);
+				MotorStore.data.desiredDirection = Math.round(50*gamepad.axes[0]);
 				MotorStore.updateMotors();
 			}
 		}

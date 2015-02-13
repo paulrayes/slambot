@@ -10,7 +10,7 @@ if (typeof io === 'undefined') {
 	};
 } else {
 	//var socket = io.connect(document.querySelector('body').dataset.robothostname);
-	var socket = io.connect('arm.local:8080');
+	var socket = io('arm.local:8080');
 }
 
 module.exports = socket;
