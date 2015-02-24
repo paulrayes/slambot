@@ -36,7 +36,7 @@ This should also calculate our exact orientation?
 - [ ] Get the raw LIDAR readings
 - [ ] Get our orientation
 - [ ] Figure out where we expect two walls to be that are at least 15cm away, somewhat long, and that are perpendicular to each other (or more than two if that's easier, not sure), we know our orientation and estimated position so we know roughly what direction we expect those walls to be
-- [ ] See how far away those walls actually are using the LIDAR data. 
+- [ ] See how far away those walls actually are using the LIDAR data.
 - [ ] Calculate the orientation of those walls relative to us, or our orientation relative to those walls (do we need to do this?)
 - [ ] Knowing the exact position of those walls, our distance from them, and our orientation relative to them, calculate our position relative to them
 - [ ] Create a pose, this contains the following:
@@ -57,7 +57,7 @@ This works on a pose to give point positions of obstacles. For now this will pro
 
 ## [ ] Estimated Position
 
-- [ ] Initialize with some initial position and set initial speed to zero
+- [x] Initialize with some initial position and set initial speed to zero
 - [ ] Record initial time
 - [ ] Repeat forever in the background, the more often this runs the more accurate it should be:
 	- Get our orientation
@@ -69,3 +69,4 @@ This works on a pose to give point positions of obstacles. For now this will pro
 - [ ] Get reading from sensor
 - [ ] Convert to particles per cactus
 - [ ] Save value in our most recent pose
+fe
