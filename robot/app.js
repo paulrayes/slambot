@@ -3,8 +3,6 @@
 // Require our dependencies
 //var socketio = require('socket.io');
 var b = require('bonescript');
-var os = require('os');
-var usage = require('usage');
 
 var io = require('./socket');
 
@@ -21,20 +19,7 @@ io.sockets.on('connection', function(socket) {
 var led = 'USR0';
 b.pinMode(led, 'out');
 
-// Every five seconds send the CPU/memory usage out on the socket
-var pid = process.pid;
-var emitLoad = function() {
-	usage.lookup(pid, { keepHistory: true }, function(err, result) {
-		//console.log(result);
-		io.sockets.emit('load', {
-			load: os.loadavg()[0],
-			cpu: result.cpu,
-			memory: process.memoryUsage().heapTotal //result.memory
-		});
-	});
-	setTimeout(emitLoad, 5000);
-};
-setTimeout(emitLoad, 5000);
+require('./stores/LoadStore');
 /*var pid = process.pid;
 var emitLoad = function(load) {
 	usage.lookup(pid, { keepHistory: true }, function(err, result) {
@@ -68,3 +53,6 @@ setInterval(function() {
 require('./hardware/motors');
 
 require('./hardware/imu');
+
+require('./stores/SpeedStore');
+require('./stores/EstimatedPositionStore');

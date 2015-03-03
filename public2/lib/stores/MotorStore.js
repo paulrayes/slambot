@@ -1,6 +1,7 @@
 var dispatcher = require('../dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
+var ls = require('local-storage');
 var socket = require('../socket');
 
 var Motor = function() {
@@ -24,6 +25,16 @@ var data = {
 
 var MotorStore = assign({}, EventEmitter.prototype, {
 	data: data,
+	setEnabled: function(enabled) {
+		var prev = this.isEnabled();
+		if (prev !== enabled) {
+			ls.set('motorStore:enabled', enabled);
+		this.emitChange();
+		}
+	},
+	isEnabled: function() {
+		return ls.get('motorStore:enabled') || false;
+	},
 	setVectors: function() {
 		data.desiredSpeedLength = Math.sqrt(Math.pow(data.desiredSpeed, 2) + Math.pow(data.desiredDirection, 2));
 		data.desiredAngle = Math.atan2(data.desiredDirection, data.desiredSpeed)*180/Math.PI;
@@ -32,9 +43,13 @@ var MotorStore = assign({}, EventEmitter.prototype, {
 	},
 	updateMotors: function() {
 		this.setVectors();
+		this.emitChange();
+	},
+	emitChange: function() {
 		socket.emit('motors:update', {
 			desiredSpeed: data.desiredSpeed,
-			desiredDirection: data.desiredDirection
+			desiredDirection: data.desiredDirection,
+			enabled: MotorStore.isEnabled()
 		});
 		this.emit('change');
 	}
@@ -125,8 +140,8 @@ window.addEventListener('keyup', function(event) {
 		if (gamepad !== undefined) {
 			if (gamepad.timestamp > lastTimestamp) {
 				lastTimestamp = gamepad.timestamp;
-				MotorStore.data.desiredSpeed = Math.round(-50*gamepad.axes[1]);
-				MotorStore.data.desiredDirection = Math.round(50*gamepad.axes[0]);
+				MotorStore.data.desiredSpeed = Math.round(-100*gamepad.axes[1]);
+				MotorStore.data.desiredDirection = Math.round(100*gamepad.axes[0]);
 				MotorStore.updateMotors();
 			}
 		}

@@ -22,6 +22,7 @@ module.exports = React.createClass({
 						<span>Load: {this.state.load}</span>
 						<span> | CPU: {this.state.cpu} %</span>
 						<span> | RAM: {this.state.memory} MB</span>
+						<span> | Lag: {this.state.lag} ms</span>
 					</p>
 				</div>
 			</div>
@@ -32,6 +33,7 @@ module.exports = React.createClass({
 		data.load = Math.round(data.load * 100) / 100;
 		data.cpu = Math.round(data.cpu * 10) / 10;
 		data.memory = Math.round(data.memory / 1024 / 1024 * 10) / 10;
+		data.lag = Math.round(data.lag * 10) / 10;
 		this.setState(data);
 	}
 });

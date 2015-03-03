@@ -6,6 +6,9 @@ var io = require('./../socket');
 // Speeds are relative to a theoretical maximum speed and thus an actual speed of -100 or 100 is not likely.
 // But, that's pretty fast so most of the time we'll probably have a desired speed of less than that.
 
+// Whether the motor driver is enabled, controls the STBY pin
+var _enabled = false;
+
 // Number from -100 (backwards) to 100 (forwards), 0 is stopped
 var _desiredSpeed = 0;
 // Number from -100 (left) to 100 (right), 0 is straight
@@ -16,7 +19,7 @@ var _actualDirection = 0;
 
 var stbyPin = 'P9_13';
 b.pinMode(stbyPin, 'out');
-b.digitalWrite(stbyPin, 1);
+b.digitalWrite(stbyPin, _enabled); // Initially be disabled
 
 var aPwmPin = 'P9_14';
 var aIn1Pin = 'P9_12';
@@ -71,6 +74,13 @@ var motorsService = {
 	left: new Motor(aPwmPin, aIn1Pin, aIn2Pin),
 	right: new Motor(bPwmPin, bIn1Pin, bIn2Pin),
 
+	get enabled() {
+		return _enabled;
+	},
+	set enabled(value) {
+		_enabled = value;
+		b.digitalWrite(stbyPin, value ? 1 : 0);
+	},
 	get desiredSpeed() {
 		return _desiredSpeed;
 	},

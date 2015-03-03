@@ -6,6 +6,7 @@ var Map = require('./components/Map/Map');
 var SpeedVisualization = require('./components/SpeedVisualization');
 var OverallSpeed = require('./components/OverallSpeed');
 var MotorSpeed = require('./components/MotorSpeed');
+var EnableFlags = require('./components/EnableFlags');
 var Webcam = require('./components/Webcam');
 var IMU = require('./components/IMU');
 var AirQuality = require('./components/AirQuality');
@@ -20,6 +21,7 @@ React.render(
 						<SpeedVisualization />
 						<OverallSpeed />
 						<MotorSpeed />
+						<EnableFlags />
 					</div>
 					<div className="col-sm-5">
 						<Map />

@@ -1,6 +1,8 @@
 var React = require('react');
 
 var ImuStore = require('../stores/ImuStore');
+var SpeedStore = require('../stores/SpeedStore');
+var EstimatedPositionStore = require('../stores/EstimatedPositionStore');
 /*var MotorStore = require('../stores/MotorStore');
 
 // Height and width of the map used by the store
@@ -24,10 +26,14 @@ module.exports = React.createClass({
 		};
 	},*/
 	getInitialState: function() {
-		return ImuStore.data;
+		var data = ImuStore.data;
+		data.speed = SpeedStore.data;
+		data.estimatedPosition = EstimatedPositionStore.data;
+		return data;
 	},
 	componentDidMount: function() {
 		ImuStore.on('change', this.onChange);
+		SpeedStore.on('change', this.onChange);
 	},
 	render: function() {
 		return (
@@ -53,9 +59,21 @@ module.exports = React.createClass({
 						<td>{this.state.accel.z}</td>
 					</tr>
 					<tr>
-						<th>Acceleration (m/s<sup>2</sup>)<br /><small>referenced to map</small></th>
+						<th>Acceleration (m/s<sup>2</sup>)<br /><small>referenced to earth</small></th>
 						<td>{this.state.accelTranslated.x}</td>
 						<td>{this.state.accelTranslated.y}</td>
+						<td></td>
+					</tr>
+					<tr>
+						<th>Speed (m/s)<br /><small>referenced to earth</small></th>
+						<td>{this.state.speed.x}</td>
+						<td>{this.state.speed.y}</td>
+						<td></td>
+					</tr>
+					<tr>
+						<th>Position (m)<br /><small>referenced to earth</small></th>
+						<td>{this.state.estimatedPosition.x}</td>
+						<td>{this.state.estimatedPosition.y}</td>
 						<td></td>
 					</tr>
 					{/*<tr>
@@ -76,6 +94,18 @@ module.exports = React.createClass({
 	},
 	onChange: function() {
 		var data = ImuStore.data;
+		data.speed = SpeedStore.data;
+		data.speed = {
+			x: Math.round(data.speed.x * 100) / 100,
+			y: Math.round(data.speed.y * 100) / 100,
+			z: Math.round(data.speed.z * 100) / 100
+		};
+		data.estimatedPosition = EstimatedPositionStore.data;
+		data.estimatedPosition = {
+			x: Math.round(data.estimatedPosition.x * 100) / 100,
+			y: Math.round(data.estimatedPosition.y * 100) / 100,
+			z: Math.round(data.estimatedPosition.z * 100) / 100
+		};
 		data.accel = {
 			x: Math.round(data.accel.x * 1000) / 1000,
 			y: Math.round(data.accel.y * 1000) / 1000,
