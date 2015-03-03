@@ -1,0 +1,26 @@
+{
+  "name": "lsm303",
+  "version": "0.1.0",
+  "description": "Node.js Module for LSM303",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "dependencies": {
+    "i2c": "^0.1.4"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/praneshkmr/node-lsm303.git"
+  },
+  "keywords": [
+    "lsm303","nodejs","node","js","bonescript"
+  ],
+  "author": "Pranesh Kumar <praneshkmr@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/praneshkmr/node-lsm303/issues"
+  },
+  "homepage": "https://github.com/praneshkmr/node-lsm303"
+}
