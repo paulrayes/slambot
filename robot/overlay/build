@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Compiling the overlays from .dts to .dtbo"
+
+dtc -O dtb -o TTG-PRU0-00A0.dtbo -b 0 -@ TTG-PRU0.dts
