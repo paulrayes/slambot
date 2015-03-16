@@ -78,6 +78,13 @@ var motorsService = {
 		return _enabled;
 	},
 	set enabled(value) {
+		if (_enabled !== value) {
+			if (value) {
+				console.log('Enabling motor driver');
+			} else {
+				console.log('Disabling motor driver');
+			}
+		}
 		_enabled = value;
 		b.digitalWrite(stbyPin, value ? 1 : 0);
 	},
@@ -102,7 +109,11 @@ var motorsService = {
 		return _actualDirection;
 	},
 
-
+	setDesiredSpeedAndDirection: function(speed, direction) {
+		_desiredSpeed = speed;
+		_desiredDirection = direction;
+		this.updateMotors();
+	},
 	updateMotors: function() {
 		console.log('Setting speed to ' + _desiredSpeed + ' with direction ' + _desiredDirection);
 
@@ -139,11 +150,9 @@ var motorsService = {
 };
 
 io.sockets.on('connection', function(socket) {
-	console.log('Socket connection established in hardware/motors.js');
 	socket.on('motors:update', function(data) {
-		_desiredSpeed = data.desiredSpeed;
-		_desiredDirection = data.desiredDirection;
-		motorsService.updateMotors();
+		motorsService.enabled = data.enabled;
+		motorsService.setDesiredSpeedAndDirection(data.desiredSpeed, data.desiredDirection);
 	});
 	motorsService.emit();
 });

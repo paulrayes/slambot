@@ -29,7 +29,7 @@ var MotorStore = assign({}, EventEmitter.prototype, {
 		var prev = this.isEnabled();
 		if (prev !== enabled) {
 			ls.set('motorStore:enabled', enabled);
-		this.emitChange();
+			this.emitChange();
 		}
 	},
 	isEnabled: function() {

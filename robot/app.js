@@ -19,6 +19,8 @@ io.sockets.on('connection', function(socket) {
 var led = 'USR0';
 b.pinMode(led, 'out');
 
+require('./hardware/pru');
+
 require('./stores/LoadStore');
 /*var pid = process.pid;
 var emitLoad = function(load) {

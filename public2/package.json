@@ -15,7 +15,8 @@
     "disc": "discify build/bundle.js > build/disc.html",
     "sshfs": "node ./bin/sshfs.js",
     "rsync": "node ./bin/rsync.js",
-    "rsync:watch": "watch \"npm run rsync\" ./../robot & watch \"npm run rsync\" ./../repos",
+    "rsyncrepos": "node ./bin/rsync_repos.js",
+    "rsync:watch": "watch \"npm run rsync\" ./../robot & watch \"npm run rsyncrepos\" ./../repos",
     "ssh": "node ./bin/ssh.js"
   },
   "devDependencies": {

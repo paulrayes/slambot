@@ -87,7 +87,7 @@ ImuStore.on('change', function() {
 	}
 
 	speed.length = Math.sqrt(Math.pow(speed.x, 2) + Math.pow(speed.y, 2));
-	console.log(data.heading, speed.length);
+	//console.log(data.heading, speed.length);
 	speed.x = speed.length * Math.cos(data.heading);
 	speed.y = speed.length * Math.sin(data.heading);
 
