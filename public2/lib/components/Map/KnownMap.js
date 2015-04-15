@@ -28,15 +28,27 @@ module.exports = React.createClass({
 
 			// Finally create the SVG element
 			wallLines['wall-' + key] = (
-				<rect x={x} y={y} width={width} height={height} fill="#666" />
+				<rect x={x} y={y} width={width} height={height} />
 			);
 
 			key++;
 		});
+		var grids = KnownMapStore.getGrid();
+		var gridDots = {};
+		var x = 0;
+		var y = 0;
+		for (x = -50; x < grids.length; x = x + 10) {
+			for (y = -50; y < grids[x].length; y = y + 10) {
+				if (grids[x][y] === 1) {
+					gridDots['pos-' + x + '-' + y] = <rect x={x/10} y={(grids[x].length-y)/10} width="0.5" height="0.5" />;
+				}
+			}
+		}
 
 		return (
 			<g>
-				{wallLines}
+			<g fill="#DDD">{wallLines}</g>
+			{/*<g fill="#000">{gridDots}</g>*/}
 			</g>
 		);
 	}

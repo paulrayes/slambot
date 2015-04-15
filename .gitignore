@@ -3,3 +3,6 @@
 *.db
 *.log
 mnt
+build
+secret.js
+node_modules

@@ -8,16 +8,19 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
-var SpeedStore = require('./SpeedStore');
-var io = require('./../socket');
+var MAX_SPEED = 50;
 
-var initialPosition = {
-	x: 0,
-	y: 0
-};
+//var SpeedStore = require('./SpeedStore');
+var io = require('../socket');
+var motors = require('../hardware/motors');
+
+/*var initialPosition = {
+	x: 41,
+	y: 28
+};*/
 var position = {
-	x: 0,
-	y: 0
+	x: 41,
+	y: 28
 };
 
 // Array of latest three speed readings
@@ -31,7 +34,48 @@ var PositionStore = assign({}, EventEmitter.prototype, {
 	}
 });
 
-SpeedStore.on('change', function() {
+//var previousDirection = 0;
+var previousSpeedLeft = 0;
+var previousSpeedRight = 0;
+var oldTime = Date.now();
+var theta = 0;
+var distanceX  = position.x;
+var distanceY = position.y;
+var readingCount = 0;
+//var previousImuHeading = 0;
+function recalculate() {
+	var newTime = Date.now();
+	var deltaTime = newTime - oldTime;
+	oldTime = newTime;
+
+	//var newHeading = imu.getAll().heading;
+	//var avgHeading = (previousImuHeading + avgHeading) / 2;
+
+	var deltaLeft = previousSpeedLeft * deltaTime / 3000;
+	var deltaRight = previousSpeedRight * deltaTime / 3000;
+	var deltaCenter = (deltaRight + deltaLeft) / 2;
+
+	var deltaTheta = (deltaRight - deltaLeft) * 3.5;
+	theta = theta + deltaTheta;
+
+	var deltaDistanceX = deltaCenter * Math.sin(theta*Math.PI/180);
+	var deltaDistanceY = deltaCenter * Math.cos(theta*Math.PI/180);
+	distanceX = distanceX - deltaDistanceX;
+	distanceY = distanceY + deltaDistanceY;
+	
+	//console.log(deltaTheta, distanceX, distanceY);
+
+	previousSpeedLeft = motors.left.desiredSpeed / 100 * MAX_SPEED;
+	previousSpeedRight = motors.right.desiredSpeed / 100 * MAX_SPEED;
+
+	position.x = distanceX;
+	position.y = distanceY;
+	setTimeout(recalculate, 100);
+}
+//motors.on('change', recalculate);
+setTimeout(recalculate, 100);
+
+/*SpeedStore.on('change', function() {
 	// New latest data point
 	var prevIndex = index;
 	index = (++index) % 3;
@@ -54,11 +98,13 @@ SpeedStore.on('change', function() {
 	position.us = speed.us;
 	//console.log(index, position.x, position.y);
 	PositionStore.emit('change');
-});
+});*/
 
 var sendToBrowser = function() {
 	io.sockets.emit('estimatedPosition:update', position);
 	setTimeout(sendToBrowser, 100);
 };
+
+setTimeout(sendToBrowser, 500);
 
 module.exports = PositionStore;

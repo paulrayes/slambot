@@ -1,5 +1,4 @@
 var startTime = Date.now();
-
 var wallLocations = [
 	[
 		[0, 0],
@@ -87,10 +86,10 @@ for (var x = -50; x <= 1250; x++) {
 //Convert from inches to cm. Each value in wallLocations array is multiplied by 2.54
 var x0, x1, y0, y1;
 for (var k = 0, kk = wallLocations.length; k < kk; k++) {
-	x0 = wallLocations[k][0][0] * 2.54;
-	y0 = wallLocations[k][0][1] * 2.54;
-	x1 = wallLocations[k][1][0] * 2.54;
-	y1 = wallLocations[k][1][1] * 2.54;
+	x0 = wallLocations[k][0][0];// * 2.54;
+	y0 = wallLocations[k][0][1];// * 2.54;
+	x1 = wallLocations[k][1][0];// * 2.54;
+	y1 = wallLocations[k][1][1];// * 2.54;
 
 	//within array, if x = x then its a vertical box, if y = y then its horizonal box
 	if (x0 === x1) { //if both x's are equal, vertical

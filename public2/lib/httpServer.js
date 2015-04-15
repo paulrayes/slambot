@@ -11,7 +11,7 @@ var app = express();
 // a different time. That would be pretty bad, as the client and server scripts must be the same version to work.
 app.use(
 	'/socket.io/',
-	express.static(__dirname + '/../node_modules/socket.io/node_modules/socket.io-client/dist/')
+	express.static(__dirname + '/../node_modules/socket.io/lib/')
 );
 
 // And serve all the other files

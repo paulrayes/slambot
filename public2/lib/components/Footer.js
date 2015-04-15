@@ -1,6 +1,9 @@
 var React = require('react');
 
 module.exports = React.createClass({
+	shouldComponentUpdate: function() {
+		return false;
+	},
 	render: function() {
 		return (
 			<footer className="footer">

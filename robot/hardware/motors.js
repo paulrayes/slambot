@@ -1,7 +1,11 @@
 'use strict';
 
+var EventEmitter = require('events').EventEmitter;
+var assign = require('object-assign');
 var b = require('bonescript');
-var io = require('./../socket');
+var io = require('../socket');
+
+var MAX_SPEED = 65;
 
 // Speeds are relative to a theoretical maximum speed and thus an actual speed of -100 or 100 is not likely.
 // But, that's pretty fast so most of the time we'll probably have a desired speed of less than that.
@@ -63,6 +67,8 @@ var Motor = function(pwmPin, in1Pin, in2Pin) {
 		// Even max speed is too fast, slow it down
 		speed = speed / 2;
 
+		speed = speed / 100 * MAX_SPEED;
+
 		// Tell the motor driver the speed
 		b.analogWrite(this.pwmPin, speed, 2000);
 	};
@@ -115,7 +121,7 @@ var motorsService = {
 		this.updateMotors();
 	},
 	updateMotors: function() {
-		console.log('Setting speed to ' + _desiredSpeed + ' with direction ' + _desiredDirection);
+		//console.log('Setting speed to ' + _desiredSpeed + ' with direction ' + _desiredDirection);
 
 		this.left.desiredSpeed = _desiredSpeed + _desiredDirection;
 		this.right.desiredSpeed = _desiredSpeed - _desiredDirection;
@@ -145,7 +151,7 @@ var motorsService = {
 			left: this.left,
 			right: this.right
 		});
-
+		module.exports.emit('change');
 	}
 };
 
@@ -161,7 +167,7 @@ io.sockets.on('connection', function(socket) {
 b.digitalRead('P8_7', function(val) {
 	console.log(val);
 });*/
-var opticalEncoderPinLeft1 = 'P8_7';
+/*var opticalEncoderPinLeft1 = 'P8_7';
 b.pinMode(opticalEncoderPinLeft1, 'in');
 var opticalEncoderPinLeft2 = 'P8_9';
 b.pinMode(opticalEncoderPinLeft2, 'in');
@@ -274,6 +280,9 @@ var opticalDone = function() {
 	setTimeout(opticalDone, 500);
 };
 
-setTimeout(opticalDone, 100);
+setTimeout(opticalDone, 100);*/
 
-module.exports = motorsService;
+module.exports = assign({}, EventEmitter.prototype, {
+	left: motorsService.left,
+	right: motorsService.right
+});

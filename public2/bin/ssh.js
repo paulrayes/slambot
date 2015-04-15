@@ -1,7 +1,7 @@
 var secret = require('./../secret.js');
 
-var command = 'sshpass -p ' + secret.password +  ' ssh -o StrictHostKeyChecking=no -o' +
-	'UserKnownHostsFile=/dev/null ubuntu@' + secret.sshHost;
+var command = 'ssh -o StrictHostKeyChecking=no -o' +
+	'UserKnownHostsFile=/dev/null root@' + secret.sshHost;
 
 console.log('================================================');
 console.log('Run the following command to SSH into the robot:');

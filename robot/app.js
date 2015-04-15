@@ -1,60 +1,71 @@
 'use strict';
 
 // Require our dependencies
-//var socketio = require('socket.io');
 var b = require('bonescript');
 
 var io = require('./socket');
 
-// Set up socket.io
-/*var port = 8080; // What port the server should run on
-var io = socketio.listen(port);
-
-io.sockets.on('connection', function(socket) {
-	console.log('Socket connection established');
-	//emitLoad();
-});*/
-
 // Set our status/load/heartbeat pin as an output
-var led = 'USR0';
+var led = 'USR1';
 b.pinMode(led, 'out');
+var statusLight = 1;
 
-require('./hardware/pru');
-
-require('./stores/LoadStore');
-/*var pid = process.pid;
-var emitLoad = function(load) {
-	usage.lookup(pid, { keepHistory: true }, function(err, result) {
-		io.sockets.emit('load', {
-			cpu: result.cpu,
-			memory: result.memory,
-			load: load
-		});
-	});
-};
 setInterval(function() {
-	b.digitalWrite(led, 1);
+	b.digitalWrite(led, statusLight);
+	statusLight = 1 - statusLight;
+}, 3000);
 
-	// Get the load
-	var load = os.loadavg()[0];
-	console.log('Load: ' + load);
+//require('./hardware/lcd').init();
+//require('./hardware/wifi');
 
-	emitLoad(load);
+// Load our hardware modules
+//var lidar = undefined;
+		//require('./hardware/pru');
+		require('./stores/LoadStore');
+		require('./hardware/motors');
+		var lidar = require('./hardware/lidar');
+		//require('./hardware/oe');
+		//require('./hardware/imu');
 
-	// This is a single core, shouldn't go above 2, but just in case...
-	if (load > 2) {
-		load = 2;
+		// Load our higher-level modules
+		require('./stores/EstimatedPositionStore');
+
+var firstSocketEstablished = false;
+io.sockets.on('connection', function(socket) {
+	if (!firstSocketEstablished) {
+		console.log('First socket connection established, starting all the things');
+		firstSocketEstablished = true;
+
+		// Load our higher-level modules
+		//require('./stores/SpeedStore');
+		//require('./stores/EstimatedPositionStore');
+	} else {
+		console.log('Socket connection established');
 	}
+});
 
-	setTimeout(function() {
-		b.digitalWrite(led, 0);
-	}, load/2*5000);
-}, 5000);*/
+function exitHandler(options, err) {
+	if (typeof lidar !== 'undefined') {
+		lidar.cleanup();
+	}
+	if (err) {
+		console.log(err.stack);
+	}
+	if (options.exit) {
+		process.exit();
+	}
+}
 
-// Require our motors module, it handles all things motors
-require('./hardware/motors');
 
-require('./hardware/imu');
+//do something when app is closing
+//process.on('exit', exitHandler.bind(null,{cleanup:true}));
 
-require('./stores/SpeedStore');
-require('./stores/EstimatedPositionStore');
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+process.on('SIGTERM', exitHandler.bind(null, {exit:true}));
+
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+
+console.log('Robot started');
+

@@ -2,6 +2,8 @@ var React = require('react');
 
 var KnownMap = require('./KnownMap');
 var EstimatedPositionTrail = require('./EstimatedPositionTrail');
+var Landmarks = require('./Landmarks');
+var Lidar = require('./Lidar');
 var MapCursorPosition = require('./MapCursorPosition');
 
 // Height and width of the map used by the store
@@ -72,6 +74,8 @@ module.exports = React.createClass({
 							onMouseLeave={this.onMouseLeave}>
 						<KnownMap width={mapWidth} height={mapHeight} />
 						<EstimatedPositionTrail width={mapWidth} height={mapHeight} />
+						{/*<Landmarks width={mapWidth} height={mapHeight} />*/}
+						<Lidar width={mapWidth} height={mapHeight} />
 						{cursorPosElem}
 					</svg>
 				</div>

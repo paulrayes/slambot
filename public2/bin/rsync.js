@@ -15,9 +15,14 @@ shell.config.fatal = true;
 /*shell.exec('rsync -vW -e "sshpass -p ' + secret.password + ' ssh -o StrictHostKeyChecking=no -o' +
 	'UserKnownHostsFile=/dev/null -c arcfour" --progress --recursive --exclude=.git* ' +
 	'--exclude=node_modules ./../robot/ ubuntu@' + secret.sshHost + ':' + secret.sshPath);*/
+/* Ubuntu rev b:
 shell.exec('rsync -vW -e "sshpass -p ' + secret.password + ' ssh -o StrictHostKeyChecking=no -o' +
 	'UserKnownHostsFile=/dev/null -c arcfour" --progress --recursive --exclude=.git* ' +
-	'--exclude=node_modules ./../robot/ ubuntu@' + secret.sshHost + ':' + secret.sshPath);
+	'--exclude=node_modules ./../robot/ ubuntu@' + secret.sshHost + ':' + secret.sshPath);*/
+/* Debian rev c: */
+shell.exec('rsync -vW -e "ssh -o StrictHostKeyChecking=no -o' +
+	'UserKnownHostsFile=/dev/null -c arcfour" --progress --recursive --exclude=.git* ' +
+	'--exclude=node_modules ./../robot/ root@' + secret.sshHost + ':' + secret.sshPath);
 /*shell.exec('rsync -vW -e "sshpass -p ' + secret.password + ' ssh -o StrictHostKeyChecking=no -o' +
 	'UserKnownHostsFile=/dev/null -c arcfour" --progress --recursive --exclude=.git* ' +
 	'--exclude=node_modules ./../repos/ ubuntu@' + secret.sshHost + ':' + secret.sshPath + '/node_modules');*/

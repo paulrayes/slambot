@@ -22,7 +22,7 @@ var lsm303 = new (require('lsm303'))();
 
 var io = require('./../socket');
 
-var accel = lsm303.accelerometer({resolution: 2});
+//var accel = lsm303.accelerometer({resolution: 2});
 var mag = lsm303.magnetometer();
 
 var twosComplement = function(value, numberOfBits) {
@@ -80,7 +80,7 @@ function pad(num, size) {
 }
 
 var Imu = function() {
-	var gyroWire = new i2c(gyroAddress, {device: device});
+	/*var gyroWire = new i2c(gyroAddress, {device: device});
 
 	// Check if we have the gyro connected
 	gyroWire.writeByte(0x0F, function(err) {
@@ -105,7 +105,7 @@ var Imu = function() {
 		if (err) {
 			console.log('Could not enable the gyro.');
 		}
-	});
+	});*/
 
 	this.getData = function(next) {
 		var data = {
@@ -116,8 +116,8 @@ var Imu = function() {
 			gyro: false
 		};
 		var totalDone = 0;
-		var TOTAL_COUNT = 2;
-		accel.readAxes(function(err, axes) {
+		var TOTAL_COUNT = 1;
+		/*accel.readAxes(function(err, axes) {
 			if (err) {
 				console.log('Error reading Accelerometer Axes : ' + err);
 				next(err);
@@ -136,7 +136,7 @@ var Imu = function() {
 					next(null, data);
 				}
 			}
-		});
+		});*/
 
 		mag.readAxes(function(err, axes) {
 			if (err) {
@@ -242,8 +242,9 @@ var refresh = function() {
 
 		latestData = data;
 		ImuStore.emit('change');
+		io.sockets.emit('imu:update', latestData);
 	});
-	setTimeout(refresh, 10);
+	setTimeout(refresh, 100);
 };
 
 setTimeout(refresh, 250);

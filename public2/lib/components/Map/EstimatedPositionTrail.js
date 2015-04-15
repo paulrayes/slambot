@@ -30,10 +30,10 @@ module.exports = React.createClass({
 			// Our map has the origin at the bottom left, SVG wants it in the
 			// top left, so need to convert all y values
 			//var y = mapHeight - Math.min(wall[0][1], wall[1][1]) - height;
-			var x1 = 100*prevPoint.x+mapWidth/2;
-			var y1 = 100*prevPoint.y+mapHeight/2;
-			var x2 = 100*point.x+mapWidth/2;
-			var y2 = 100*point.y+mapHeight/2;
+			var x1 = prevPoint.x;//+mapWidth/2;
+			var y1 = mapHeight - prevPoint.y;//+mapHeight/2;
+			var x2 = point.x;//+mapWidth/2;
+			var y2 = mapHeight - point.y;//+mapHeight/2;
 
 			// Finally create the SVG element
 			lines['wall-' + key] = (

@@ -1,3 +1,3 @@
 #!/bin/sh
 pasm -b aq.p
-gcc aq.c -o start -lpthread -lprussdrv
+#gcc aq.c -o start -lpthread -lprussdrv

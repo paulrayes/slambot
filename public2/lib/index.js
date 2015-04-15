@@ -7,7 +7,7 @@ var SpeedVisualization = require('./components/SpeedVisualization');
 var OverallSpeed = require('./components/OverallSpeed');
 var MotorSpeed = require('./components/MotorSpeed');
 var EnableFlags = require('./components/EnableFlags');
-var Webcam = require('./components/Webcam');
+//var Webcam = require('./components/Webcam');
 var IMU = require('./components/IMU');
 var AirQuality = require('./components/AirQuality');
 
@@ -19,16 +19,13 @@ React.render(
 				<div className="row">
 					<div className="col-sm-3">
 						<SpeedVisualization />
-						<OverallSpeed />
-						<MotorSpeed />
 						<EnableFlags />
+						<IMU />
 					</div>
-					<div className="col-sm-5">
+					<div className="col-sm-6">
 						<Map />
 					</div>
-					<div className="col-sm-4">
-						<Webcam />
-						<IMU />
+					<div className="col-sm-3">
 						<AirQuality />
 					</div>
 				</div>

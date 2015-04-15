@@ -45,7 +45,7 @@ module.exports = React.createClass({
 					<p>Heading: {this.state.heading}°</p>
 					<p>Temperature: {this.state.temp}°C</p>
 				</div>
-				<table className="table table-bordered" style={{width:'100%'}}>
+				{/*<table className="table table-bordered" style={{width:'100%'}}>
 					<tr>
 						<th>&nbsp;</th>
 						<th style={{width:'17%'}}>X</th>
@@ -75,7 +75,7 @@ module.exports = React.createClass({
 						<td>{this.state.estimatedPosition.x}</td>
 						<td>{this.state.estimatedPosition.y}</td>
 						<td></td>
-					</tr>
+					</tr>*/}
 					{/*<tr>
 						<th>Magnetic Fields</th>
 						<td>{this.state.mag.x}</td>
@@ -87,14 +87,14 @@ module.exports = React.createClass({
 						<td>{this.state.gyro.x}</td>
 						<td>{this.state.gyro.y}</td>
 						<td>{this.state.gyro.z}</td>
-					</tr>*/}
-				</table>
+					</tr>
+				</table>*/}
 			</div>
 		);
 	},
 	onChange: function() {
 		var data = ImuStore.data;
-		data.speed = SpeedStore.data;
+		/*data.speed = SpeedStore.data;
 		data.speed = {
 			x: Math.round(data.speed.x * 100) / 100,
 			y: Math.round(data.speed.y * 100) / 100,
@@ -114,7 +114,7 @@ module.exports = React.createClass({
 		data.accelTranslated = {
 			x: Math.round(data.accelTranslated.x * 1000) / 1000,
 			y: Math.round(data.accelTranslated.y * 1000) / 1000
-		};
+		};*/
 		data.heading = Math.round(data.heading);
 		this.setState(data);
 	}
