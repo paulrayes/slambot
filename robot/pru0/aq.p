@@ -34,14 +34,14 @@ AQHIGH:
 	CALL SLEEP             // wait for 1us
 	ADD r5, r5, 1          // Add one to the time the sensor is high
 	ADD r4, r4, 1          // Add one to the total time
-	QBBS AQHIGH, r31.t3    // Loop until AQ sensor reading goes low again
+	QBBS AQHIGH, r31.t5    // Loop until AQ sensor reading goes low again
 
 	CLR r30.t5             // turn the status LED off
 
 AQLOW:
 	CALL SLEEP             // wait for 1us
 	ADD r4, r4, 1          // Add one to the total time
-	QBBC AQLOW, r31.t3     // Loop until AQ sensor reading goes high again
+	QBBC AQLOW, r31.t5     // Loop until AQ sensor reading goes high again
 
 	JMP REPEAT              // Go again
 

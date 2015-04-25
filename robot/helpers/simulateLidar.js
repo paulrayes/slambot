@@ -1,6 +1,6 @@
 'use strict';
-var Promise = require('promise');
-var Parallel = require('paralleljs');
+//var Promise = require('promise');
+//var Parallel = require('paralleljs');
 var map = require('../fixture/map');
 var grid = map.grid;
 

@@ -62,14 +62,18 @@ function recalculate() {
 	var deltaDistanceY = deltaCenter * Math.cos(theta*Math.PI/180);
 	distanceX = distanceX - deltaDistanceX;
 	distanceY = distanceY + deltaDistanceY;
-	
+
 	//console.log(deltaTheta, distanceX, distanceY);
 
 	previousSpeedLeft = motors.left.desiredSpeed / 100 * MAX_SPEED;
 	previousSpeedRight = motors.right.desiredSpeed / 100 * MAX_SPEED;
 
-	position.x = distanceX;
-	position.y = distanceY;
+	if (position.x !== distanceX || position.y !== distanceY) {
+		position.x = distanceX;
+		position.y = distanceY;
+		PositionStore.emit('change');
+		io.sockets.emit('estimatedPosition:update', position);
+	}
 	setTimeout(recalculate, 100);
 }
 //motors.on('change', recalculate);
@@ -100,11 +104,19 @@ setTimeout(recalculate, 100);
 	PositionStore.emit('change');
 });*/
 
+/*var previousBrowserPosition = {
+	x: -1,
+	y: -1
+};
 var sendToBrowser = function() {
-	io.sockets.emit('estimatedPosition:update', position);
+	if (previousBrowserPosition.x !== position.x || previousBrowserPosition.y !== position.y) {
+		previousBrowserPosition.x = position.x;
+		previousBrowserPosition.y = position.y;
+		io.sockets.emit('estimatedPosition:update', position);
+	}
 	setTimeout(sendToBrowser, 100);
 };
 
-setTimeout(sendToBrowser, 500);
+setTimeout(sendToBrowser, 500);*/
 
 module.exports = PositionStore;

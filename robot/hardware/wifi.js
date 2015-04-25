@@ -160,6 +160,26 @@ function obtainIp() {
 	});
 }
 
+function setTime() {
+	console.log('wifi: attempting to set time');
+	return exec('ntpdate time.nist.gov').then(function() {
+		return pause(500);
+	}).then(displayTime);
+}
+
+function displayTime() {
+	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	var date = new Date();
+	var day = date.getDate();
+	var month = months[date.getMonth()];
+	var year = date.getFullYear();
+	var hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+	var ampm = date.getHours() > 11 ? 'PM' : 'AM';
+	var minute = date.getMinutes();
+	var second = date.getSeconds();
+	console.log('wifi: Current time is ' + day + ' ' + month + ' ' + year + ', ' + hour + ':' + minute + ':' + second + ' ' + ampm);
+}
+
 // Determine whether we are currently connected to a network and if we have an IP address
 lcd.setRow(0, 'searching...');
 getNetworkAndIp().then(function() {
@@ -173,6 +193,13 @@ getNetworkAndIp().then(function() {
 	} else {
 		// We are not connected. Do everything.
 		return connectWifi().then(obtainIp);
+	}
+}).then(function() {
+	var date = new Date();
+	if (date.getFullYear() > 2014) {
+		return displayTime();
+	} else {
+		return setTime();
 	}
 }).then(function() {
 	// guaranteed to be connected here

@@ -1,6 +1,6 @@
 
-var Promise = require('promise');
-var Parallel = require('paralleljs');
+//var Promise = require('promise');
+//var Parallel = require('paralleljs');
 
 var findLandmarks = require('../helpers/findLandmarks');
 var simulateLidar = require('../helpers/simulateLidar');

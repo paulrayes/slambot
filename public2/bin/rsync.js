@@ -20,9 +20,17 @@ shell.exec('rsync -vW -e "sshpass -p ' + secret.password + ' ssh -o StrictHostKe
 	'UserKnownHostsFile=/dev/null -c arcfour" --progress --recursive --exclude=.git* ' +
 	'--exclude=node_modules ./../robot/ ubuntu@' + secret.sshHost + ':' + secret.sshPath);*/
 /* Debian rev c: */
-shell.exec('rsync -vW -e "ssh -o StrictHostKeyChecking=no -o' +
+var start = Date.now();
+/*shell.exec('rsync -aWu ' +
+	' --progress --recursive --exclude=.git* ' +
+	'--exclude=node_modules ./../robot/ root@' + secret.sshHost + ':' + secret.sshPath, function() {
+		console.log(Date.now() - start);
+	});*/
+shell.exec('rsync -aWuv -e "ssh -o StrictHostKeyChecking=no -o' +
 	'UserKnownHostsFile=/dev/null -c arcfour" --progress --recursive --exclude=.git* ' +
-	'--exclude=node_modules ./../robot/ root@' + secret.sshHost + ':' + secret.sshPath);
+	'--exclude=node_modules ./../robot/ root@' + secret.sshHost + ':' + secret.sshPath, function() {
+		console.log('Uploaded in ' + (Date.now() - start)/1000 + ' seconds');
+	});
 /*shell.exec('rsync -vW -e "sshpass -p ' + secret.password + ' ssh -o StrictHostKeyChecking=no -o' +
 	'UserKnownHostsFile=/dev/null -c arcfour" --progress --recursive --exclude=.git* ' +
 	'--exclude=node_modules ./../repos/ ubuntu@' + secret.sshHost + ':' + secret.sshPath + '/node_modules');*/
