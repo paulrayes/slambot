@@ -4,7 +4,7 @@
 var childProcess = require('child_process');
 var b = require('bonescript');
 
-childProcess.exec('service apache2 stop', function() {
+childProcess.exec('killall jekyll & service apache2 stop & echo TTG-PRU0 > /sys/devices/bone_capemgr.9/slots', function() {
 	var io = require('./socket');
 
 	// Set our status/load/heartbeat pin as an output
@@ -22,15 +22,18 @@ childProcess.exec('service apache2 stop', function() {
 
 	// Load our hardware modules
 	//var lidar = undefined;
-			//require('./hardware/pru');
+			var pru = require('./hardware/pru');
 			require('./stores/LoadStore');
 			require('./hardware/motors');
-			//var lidar = require('./hardware/lidar');
+			var lidar = require('./hardware/lidar');
 			//require('./hardware/oe');
 			//require('./hardware/imu');
 
 			// Load our higher-level modules
 			require('./stores/EstimatedPositionStore');
+			require('./stores/Landmarks');
+			require('./stores/ActualPosition');
+			//require('./stores/PoseStore');
 
 	var firstSocketEstablished = false;
 	io.sockets.on('connection', function(socket) {
@@ -49,6 +52,7 @@ childProcess.exec('service apache2 stop', function() {
 	function exitHandler(options, err) {
 		if (typeof lidar !== 'undefined') {
 			lidar.cleanup();
+			pru.cleanup();
 		}
 		if (err) {
 			console.log(err.stack);

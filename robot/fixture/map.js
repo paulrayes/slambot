@@ -1,85 +1,67 @@
 var startTime = Date.now();
 
+// Initializing
 var wallLocations = [
 	[
 		[0, 0],
-		[0, 48]
+		[120.8, 2]
 	],
 	[
-		[8, 0],
-		[8, 20.5]
+		[0, 2],
+		[2, 132]
 	],
 	[
-		[14, 27.5],
-		[14, 32]
+		[20.9, 2],
+		[22.9, 53]
 	],
 	[
-		[14, 39.8],
-		[14, 48]
+		[22.9, 51],
+		[36, 53]
 	],
 	[
-		[24, 0],
-		[24, 20.5]
+		[59, 2],
+		[61, 51]
 	],
 	[
-		[24, 40],
-		[24, 48]
+		[59, 51],
+		[98.9, 53]
 	],
 	[
-		[32, 27.5],
-		[32, 40]
+		[79.9, 25.5],
+		[100.2, 27.5]
 	],
 	[
-		[48, 0],
-		[48, 48]
-	],
-	//*********
-	//
-	// horizontal wall locations
-	// read from pauls map drawing bottom to top, left to right
-	[
-		[0, 0],
-		[48, 0]
+		[118.8, 2],
+		[120.8, 132]
 	],
 	[
-		[32, 12],
-		[40, 12]
+		[0, 132],
+		[120.8, 134]
 	],
 	[
-		[8, 20],
-		[14, 20]
+		[60.7, 113.5],
+		[62.7, 132]
 	],
 	[
-		[24, 20],
-		[40, 20]
+		[82.7, 83],
+		[84.7, 111.4]
 	],
 	[
-		[0, 28],
-		[14, 28]
+		[84.7, 83],
+		[118.8, 85]
 	],
 	[
-		[32, 28],
-		[48, 28]
-	],
-	[
-		[14, 40],
-		[16, 40]
-	],
-	[
-		[36, 40],
-		[48, 40]
-	],
-	[
-		[0, 48],
-		[48, 48]
+		[2, 81.5],
+		[34, 83.5]
 	]
 ];
 
+
 //initiate grid, set all values to zero
 var grid = [];
-for (var x = -50; x <= 1250; x++) {
+for (var x = -50; x <= 1350; x++) {
 	grid[x] = [];
-	for (var y = -50; y <= 1250; y++) {
+	for (var y = -50; y <= 1350; y++) {
 		grid[x][y] = 0;
 	}
 }
@@ -87,11 +69,12 @@ for (var x = -50; x <= 1250; x++) {
 //Convert from inches to cm. Each value in wallLocations array is multiplied by 2.54
 var x0, x1, y0, y1;
 for (var k = 0, kk = wallLocations.length; k < kk; k++) {
-	x0 = wallLocations[k][0][0] * 2.54;
-	y0 = wallLocations[k][0][1] * 2.54;
-	x1 = wallLocations[k][1][0] * 2.54;
-	y1 = wallLocations[k][1][1] * 2.54;
+	x0 = wallLocations[k][0][0];// * 2.54;
+	y0 = wallLocations[k][0][1];// * 2.54;
+	x1 = wallLocations[k][1][0];// * 2.54;
+	y1 = wallLocations[k][1][1];// * 2.54;
 
+/*
 	//within array, if x = x then its a vertical box, if y = y then its horizonal box
 	if (x0 === x1) { //if both x's are equal, vertical
 
@@ -102,17 +85,11 @@ for (var k = 0, kk = wallLocations.length; k < kk; k++) {
 		y0 = y0 - 0.375 * 2.54;
 		y1 = y1 + 0.375 * 2.54;
 	}
-
+*/
 	x0 = Math.round(x0); //round up value to nearest whole value
 	x1 = Math.round(x1);
 	y0 = Math.round(y0);
 	y1 = Math.round(y1);
-	/*console.log({
-		x0: x0,
-		y0: y0,
-		x1: x1,
-		y1: y1
-	});*/
 
 	for (x = x0*10; x <= x1*10; x++) {
 		for (y = y0*10; y <= y1*10; y++) {

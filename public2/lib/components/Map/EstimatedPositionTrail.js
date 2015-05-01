@@ -14,13 +14,13 @@ module.exports = React.createClass({
 	render: function() {
 		var mapHeight = this.props.height;
 		var mapWidth = this.props.width;
-
+//console.log(EstimatedPositionStore.data);
 		// Get the wall positions from the store and create SVG elements for
 		// each of them.
 		var points = this.state.points;
 		var lines = {};
 		var key = 0;
-		prevPoint = {x:0,y:0};
+		prevPoint = points[0];
 		points.forEach(function(point) {
 			// Calculate x, y, width, and height for this wall
 			//var width = Math.abs(wall[1][0] - wall[0][0]);

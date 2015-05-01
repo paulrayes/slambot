@@ -29,13 +29,17 @@ function exec(command, options) {
 // List of all the networks we know, this would probably be good to put in a JSON file somewhere instead
 var networks = [
 	{
-		ssid: 'asu_encrypted',
-		wpa_supplicant: '/etc/wpa_supplicant.conf'
-	},
-	{
 		ssid: 'ShadowOfMonsters',
 		wpa_supplicant: '/etc/wpa_supplicant_ShadowOfMonsters.conf'
-	}
+	},
+	{
+		ssid: 'ForestWithoutTrees',
+		wpa_supplicant: '/etc/wpa_supplicant_ForestWithoutTrees.conf'
+	}/*,
+	{
+		ssid: 'asu_encrypted',
+		wpa_supplicant: '/etc/wpa_supplicant.conf'
+	}*/
 ];
 
 // Name of the WiFi network we're connected to
@@ -101,7 +105,7 @@ function getIpAddress(val) {
 // Attempts to connect to the first known network
 function connectWifi() {
 	console.log('wifi: attempting to connect');
-	lcd.setRow(0, 'searching...');
+	lcd.setWrappedString('searching...');
 	// Bring the wifi adapter up and search for known wifi networks
 	return exec('ifconfig wlan0 up').then(function() {
 		console.log('wifi: adapter is up, searching for networks');
@@ -121,7 +125,7 @@ function connectWifi() {
 		if (nw !== false) {
 			network = nw.ssid;
 			console.log('wifi: found network ' + network);
-			lcd.setRow(0, 'connecting..');
+			lcd.setWrappedString( 'connecting..');
 			return exec('wpa_supplicant -B -d -i wlan0 -c ' + nw.wpa_supplicant);
 		} else {
 			throw ('wifi: no known networks found');
@@ -134,7 +138,7 @@ function connectWifi() {
 		// See if we are now connected
 		if (network !== '') {
 			console.log('wifi: connected to ' + network);
-			lcd.setRow(0, network);
+			lcd.setWrappedString(network);
 			return network;
 		} else {
 			console.log('wifi: wpa_supplicant could not connect');
@@ -145,17 +149,17 @@ function connectWifi() {
 
 // Attempt to obtain an IP address lease with dhcp
 function obtainIp() {
-	lcd.setRow(1, 'dhclient...');
+	lcd.setWrappedString(network + ' dhclient...');
 	console.log('wifi: attempting to obtain ip address')
 	return exec('dhclient -v -1 wlan0', {timeout: 15000}).then(function() {
 		return pause(1000);
 	}).then(getIpAddress).then(function() {
 		if (ip !== '') {
 			console.log('wifi: obtained IP address: ' + ip);
-			lcd.setRow(1, ip);
+			lcd.setWrappedString(network + ' ' + ip);
 		} else {
 			console.log('wifi: could not obtain IP address');
-			lcd.setRow(1, 'dhclient err');
+			lcd.setWrappedString(network + ' dhclient err');
 		}
 	});
 }
@@ -181,14 +185,14 @@ function displayTime() {
 }
 
 // Determine whether we are currently connected to a network and if we have an IP address
-lcd.setRow(0, 'searching...');
+lcd.setWrappedString('searching...');
 getNetworkAndIp().then(function() {
 	if (network !== '' && ip !== '') {
 		// We are connected and have an IP address, we're done
 		return;
 	} else if (network !== '') {
 		// We are connected but need an IP address, so do just that.
-		lcd.setRow(0, network);
+		lcd.setWrappedString(network);
 		return obtainIp();
 	} else {
 		// We are not connected. Do everything.
@@ -204,13 +208,12 @@ getNetworkAndIp().then(function() {
 }).then(function() {
 	// guaranteed to be connected here
 	console.log('wifi: connected to ' + network + ', ip ' + ip);
-	lcd.setRow(0, network);
-	lcd.setRow(1, ip);
+	lcd.setWrappedString(network + ' ' + ip);
 	module.exports.emit('change');
 }).catch(function(err) {
 	// Something went wrong
 	console.log('wifi error!');
-	lcd.setRow(0, 'Wifi error!');
+	lcd.setWrappedString('Wifi error!');
 	//Commented line below should display the error we reached but it isn't working
 	//lcd.setRow(1, err);
 	console.log(err);

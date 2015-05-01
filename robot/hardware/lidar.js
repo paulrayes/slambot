@@ -41,7 +41,7 @@ function processData(buffer) {
 	for (var i = 0; i < buffer.length; i++) {
 		arr.push(buffer[i]);
 	}
-	if (!scanStarted) {
+	/*if (!scanStarted) {
 		var location = 0;
 		while (location + 7 < arr.length && !scanStarted) {
 			if (arr[location+0] === 0xA5 && arr[location+1] === 0x5A && arr[location+2] === 0x05 && arr[location+3] === 0x00 && arr[location+4] === 0x00 && arr[location+5] === 0x40 && arr[location+6] === 0x81) {
@@ -54,22 +54,29 @@ function processData(buffer) {
 				arr.splice(0, 1);
 			}
 		}
+	}*/
+	if (!scanStarted && buffer[0] === 0xA5 && buffer[1] === 0x5A && buffer[2] === 0x05 && buffer[3] === 0x00 && buffer[4] === 0x00 && buffer[5] === 0x40 && buffer[6] === 0x81) {
+		console.log('lidar: scan started');
+		scanStarted = true;
+		//return;
+		//location = location + 7;
+		arr.splice(0, 7);
 	}
-	//if (!scanStarted && buffer[0] === 0xA5 && buffer[1] === 0x5A && buffer[2] === 0x05 && buffer[3] === 0x00 && buffer[4] === 0x00 && buffer[5] === 0x40 && buffer[6] === 0x81) {
-	//	console.log('lidar: scan started');
-	//	scanStarted = true;
-	//	return;
-	//}
 	if (scanStarted === true) {
 		var location = 0;
-		process.exit();
+		//process.exit();
 		while (location + packetSize < arr.length) {
 			var newReading = (arr[location + 0] & 0x01);
 			var notNewReading = ((arr[location + 0] & 0x02) >> 1);
 			var check = (arr[location + 1] & 0x01) === 1;
 			if ((newReading === notNewReading) || !check) {
-				console.log('lidar: invalid data');
-				return;
+				//console.log('lidar: invalid data');
+				//location = location + 1;
+				//arr.splice(0, 1);
+				//location = location + packetSize;
+				arr.splice(0, 1);
+				continue;
+				//return;
 				//throw Error("lidar: invalid data");
 			}
 
@@ -78,6 +85,7 @@ function processData(buffer) {
 					readingCount++;
 					if (readingCount > 1) {
 						//console.log('lidar: ' + readings.length + ' readings in ' + readingCount);
+						latestData = readings;
 						LidarStore.emit('change');
 						io.sockets.emit('lidar:update', {
 							count: readingCount,
@@ -97,14 +105,14 @@ function processData(buffer) {
 				});
 			}
 
-			location = location + packetSize;
+			//location = location + packetSize;
 			arr.splice(0, packetSize);
 		}
 	}
 }
-/*port.on('data', function(buffer) {
-	process(buffer);
-});*/
+port.on('data', function(buffer) {
+	processData(buffer);
+});
 
 function openFsPort() {
 	fs.open('/dev/ttyO5', 'r', function(err, fd) {
@@ -113,15 +121,15 @@ function openFsPort() {
 		function read() {
 			fs.read(fd, buffer, 0, buffer.length, null, function(err, bytesRead, buffer) {
 				//console.log(bytesRead);
-				console.log(buffer);
-				//processData(buffer);
+				//console.log(buffer);
+				processData(buffer);
 				process.nextTick(read);
 			});
 		}
 		read();
 	});
 }
-openFsPort();
+//openFsPort();
 port.on('open', function(err) {
 	if (err) {
 		throw err;
@@ -142,12 +150,12 @@ port.on('open', function(err) {
 					/*port.drain(function() {
 						port.close();
 					});*/
-					port.close(function(err) {
+					/*port.close(function(err) {
 						if (err) {
 							throw err;
 						}
 						//openFsPort();
-					});
+					});*/
 				});
 			}, 5000);
 		});
