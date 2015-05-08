@@ -18,7 +18,8 @@
 
 INITIALIZE:
 	MOV r0, 0x00000000     // Save the base data memory address
-	MOV r3, 14999998       // Number of unit time durations to wait before saving to memory.
+	//MOV r3, 9599998
+	MOV r3, 29599998       // Number of unit time durations to wait before saving to memory.
 	                       // 15000000 is 30 seconds but some time is spent doing other
 	                       // things so we use a little less.
 	MOV r6, 0x0            // Initialize the number of times we've saved to memory
@@ -27,7 +28,7 @@ START:
 	MOV r4, 0x0            // Initialize counter for total time for a loop
 
 REPEAT:
-	SET r30.t5             // turn the status LED on
+	//SET r30.t5             // turn the status LED on
 
 AQHIGH:
 	QBGE SAVEMEM, r3, r4   // If it's been >= 30 seconds save to memory
@@ -36,7 +37,7 @@ AQHIGH:
 	ADD r4, r4, 1          // Add one to the total time
 	QBBS AQHIGH, r31.t5    // Loop until AQ sensor reading goes low again
 
-	CLR r30.t5             // turn the status LED off
+	//CLR r30.t5             // turn the status LED off
 
 AQLOW:
 	CALL SLEEP             // wait for 1us

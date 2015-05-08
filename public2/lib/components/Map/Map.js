@@ -7,8 +7,8 @@ var Lidar = require('./Lidar');
 var MapCursorPosition = require('./MapCursorPosition');
 
 // Height and width of the map used by the store
-var mapHeight = 125;
-var mapWidth = 125;
+var mapHeight = 135;
+var mapWidth = 135;
 
 function getPosition(element) {
 	var xPosition = 0;
@@ -67,7 +67,7 @@ module.exports = React.createClass({
 							baseProfile="full"
 							xmlns="http://www.w3.org/2000/svg"
 							width="100%"
-							viewBox="-5 -5 135 135"
+							viewBox="-5 -5 145 145"
 							ref="svg"
 							onMouseMove={this.onMouseMove}
 							onMouseEnter={this.onMouseEnter}

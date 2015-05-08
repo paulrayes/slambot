@@ -18,9 +18,9 @@
   },
   "main": "app.js",
   "scripts": {
-    "build": "npm run build-overlay && npm run build-pru",
-    "buildoverlay": "(cd overlay && ./build)",
-    "buildpru": "(cd pru0 && ./build)",
+    "build": "npm run buildoverlay && npm run buildpru",
+    "buildoverlay": "(cd overlay && sh build)",
+    "buildpru": "(cd pru0 && sh build)",
     "start": "node app.js"
   }
 }

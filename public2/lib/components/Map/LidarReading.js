@@ -3,12 +3,11 @@ var React = require('react');
 module.exports = React.createClass({
 	shouldComponentUpdate: function(nextProps) {
 		// Lidar readings will never change after the fact
-		return false;
+		//return false;
+		return true;
 	},
 	render: function() {
 		// Basic artihmetic involving pythagorean theorem
-		var mapHeight = this.props.height;
-		var mapWidth = this.props.width;
 		var _this = this;
 		var rects = {};
 		var key = 0;

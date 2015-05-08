@@ -17,16 +17,19 @@ React.render(
 			<Header />
 			<div className="container-fluid">
 				<div className="row">
-					<div className="col-sm-3">
-						<SpeedVisualization />
-						<EnableFlags />
-						<IMU />
+					<div className="col-sm-6">
+						<div className="row">
+							<div className="col-sm-6">
+								<SpeedVisualization />
+							</div>
+							<div className="col-sm-6">
+								<EnableFlags />
+							</div>
+						</div>
+						<AirQuality />
 					</div>
 					<div className="col-sm-6">
 						<Map />
-					</div>
-					<div className="col-sm-3">
-						<AirQuality />
 					</div>
 				</div>
 			</div>

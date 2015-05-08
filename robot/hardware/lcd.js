@@ -7,6 +7,7 @@ var wire = null;
 var shownStrings = ['', '', '', ''];
 var strings = ['', '', '', ''];
 var positions = [0, 0, 0, 0];
+var scroll = true;
 
 function sendCommand(command) {
 	wire.writeBytes(0x80, [command], function() {});
@@ -103,7 +104,7 @@ function draw() {
 				strings[i] = '  ' + strings[i];
 			}
 			shownStrings[i] = strings[i];
-			console.log('lcd: drawing row ' + i);
+			//console.log('lcd: drawing row ' + i);
 			positions[i] = 0;
 			sendStr(i, strings[i], positions[i]);
 		} else if (strings[i].length > 12) {
@@ -114,7 +115,9 @@ function draw() {
 			sendStr(i, strings[i], positions[i]);
 		}
 	}
-	setTimeout(draw, 500);
+	if (scroll) {
+		setTimeout(draw, 500);
+	}
 }
 
 
@@ -133,7 +136,23 @@ module.exports = {
 			throw('lcd: string must be a string');
 		}
 		string = string.replace('\n', ' ');
-		console.log('lcd: setting row ' + row + ' to "' + string + '"');
+		//console.log('lcd: setting row ' + row + ' to "' + string + '"');
 		strings[row] = string;
+		if (string.length > 12 && !scroll) {
+			scroll = true;
+			draw();
+		}
+	},
+	setWrappedString: function(string) {
+		if (typeof string !== 'string') {
+			throw('lcd: string must be a string');
+		}
+		string = string.replace('\n', ' ');
+		strings[0] = string.substr(0, 12);
+		strings[1] = string.substr(12, 12);
+		strings[2] = string.substr(24, 12);
+		strings[3] = string.substr(36, 12);
+		scroll = false;
+		draw();
 	}
 };

@@ -1,3 +1,4 @@
 #!/bin/sh
 pasm -b aq.p
 #gcc aq.c -o start -lpthread -lprussdrv
+echo Built PRU code

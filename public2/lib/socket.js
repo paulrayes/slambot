@@ -16,7 +16,7 @@ if (typeof io === 'undefined') {
 	//var socket = io.connect(document.querySelector('body').dataset.robothostname);
 
 	//var socket = io('192.168.7.2:8080');
-	var socket = io(secret.sshHost + ':8080', {
+	var socket = io(secret.webHost + ':8080', {
 		transports: ['websocket']
 	});
 }

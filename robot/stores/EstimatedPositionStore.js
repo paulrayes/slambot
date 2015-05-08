@@ -14,13 +14,11 @@ var MAX_SPEED = 50;
 var io = require('../socket');
 var motors = require('../hardware/motors');
 
-/*var initialPosition = {
-	x: 41,
-	y: 28
-};*/
+var initialPosition = require('../config').initialPosition;
 var position = {
-	x: 41,
-	y: 28
+	x: initialPosition.x,
+	y: initialPosition.y,
+	heading: 0
 };
 
 // Array of latest three speed readings
@@ -29,6 +27,11 @@ var speeds = [{x:0,y:0},{x:0,y:0},{x:0,y:0}];
 var index = 0;
 
 var PositionStore = assign({}, EventEmitter.prototype, {
+	setEstimate: function(newPosition) {
+		position.x = newPosition.x;
+		position.y = newPosition.y;
+		position.heading = newPosition.heading;
+	},
 	getAll: function() {
 		return position;
 	}
@@ -55,22 +58,23 @@ function recalculate() {
 	var deltaRight = previousSpeedRight * deltaTime / 3000;
 	var deltaCenter = (deltaRight + deltaLeft) / 2;
 
-	var deltaTheta = (deltaRight - deltaLeft) * 3.5;
-	theta = theta + deltaTheta;
+	var deltaTheta = (deltaRight - deltaLeft) * 2;
+	position.heading = position.heading + deltaTheta;
 
-	var deltaDistanceX = deltaCenter * Math.sin(theta*Math.PI/180);
-	var deltaDistanceY = deltaCenter * Math.cos(theta*Math.PI/180);
-	distanceX = distanceX - deltaDistanceX;
-	distanceY = distanceY + deltaDistanceY;
+	var deltaDistanceX = deltaCenter * Math.sin(position.heading*Math.PI/180);
+	var deltaDistanceY = deltaCenter * Math.cos(position.heading*Math.PI/180);
+	position.x = position.x - deltaDistanceX;
+	position.y = position.y + deltaDistanceY;
 
 	//console.log(deltaTheta, distanceX, distanceY);
 
 	previousSpeedLeft = motors.left.desiredSpeed / 100 * MAX_SPEED;
 	previousSpeedRight = motors.right.desiredSpeed / 100 * MAX_SPEED;
 
-	if (position.x !== distanceX || position.y !== distanceY) {
-		position.x = distanceX;
-		position.y = distanceY;
+	if (position.x !== distanceX || position.y !== distanceY || position.heading !== theta) {
+		distanceX = position.x;// = distanceX;
+		distanceY = position.y;// = distanceY;
+		theta = position.heading;// = theta;
 		PositionStore.emit('change');
 		io.sockets.emit('estimatedPosition:update', position);
 	}

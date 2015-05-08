@@ -3,3 +3,8 @@
 echo "Compiling the overlays from .dts to .dtbo"
 
 dtc -O dtb -o TTG-PRU0-00A0.dtbo -b 0 -@ TTG-PRU0.dts
+
+cp TTG-PRU0-00A0.dtbo /lib/firmware
+
+echo Built overlays
+echo You must now restart for them to take effect
