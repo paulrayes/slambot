@@ -1,0 +1,8 @@
+   SLAM Airborne Particle Detection and Surveillance Robot
+   Copyright 2014-2015 Paul Rayes, Vanessa Martinez, Josh Montes, and Vu Truong
+
+   This product includes software developed by Paul Rayes, Vanessa
+   Martinez, Josh Montes, and Vu Truong (http://www.rayes.io/slambot/).
+
+   This software contains code derived from the nodejs-rp-lidar
+   project, written by "leshy" (https://github.com/leshy/nodejs-rp-lidar).

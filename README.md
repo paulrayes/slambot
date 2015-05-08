@@ -1,30 +1,28 @@
-TTGBot
-======
+SLAM Airborne Particle Detection and Surveillance Robot
+=======================================================
 
-See the Wiki for documentation.
+This project is a SLAM robot capable of airborne particle detection and surveillance. The target market is primarily cleanrooms in the semiconductor industry. A modular design will allow the robot to be used for other applications in the future. This replaces the main two current methods of particle detection: hand-held and wall-mounted sensors. This website describes the work completed to date, including background research performed, specifications and design of the current prototype, how to operate the current prototype, and future work that must be completed for a final product.
 
-Starting the node server
-------------------------
+Documentation
+-------------
 
-To build the front-end files, browse to the public directory (either on the robot or your own computer),
-and enter the following command:
+A full description of the project, including all hardware and software, is available [on the project website](http://rayes.io/slambot/). It also contains instructions on setting up a BeagleBone Black to run the code.
 
-	grunt watch
+License
+-------
 
-This will built all front-end files necessary then start watching files for changes, and re-build them when they do
-change. It will not build new files, to do that kill the process (Ctrl+C) and run it again. It will also upload the
-server files to the robot, and re-upload them when they change. Some errors may be written here so keep it visible.
+[License TLDR](https://tldrlegal.com/l/apache2)
 
-To start the node server, SSH into the robot, browse to the server directory, and enter the following command:
+   Copyright 2014-2015 Paul Rayes, Vanessa Martinez, Josh Montes, and Vu Truong
 
-	sudo npm start
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
-This will start the supervisor, which will keep the node application running, and will restart
-it if it crashes or if any of the source files change. Any errors encountered will be written here, along with debug
-information, so keep it visible.
+       http://www.apache.org/licenses/LICENSE-2.0
 
-Finally there is a web server that runs on your local machine and serves the files for the front-end; if you already
-have a web server set up on your computer you can use that, otherwise enter the following command to start it from the
-public directory:
-
-	node httpServer.js
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
