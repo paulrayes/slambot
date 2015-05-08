@@ -1,5 +1,6 @@
 'use strict';
 
+// Location of each possible landmarks
 var locationRanges = [
 	{ // 0
 		x: [-10,  20],
@@ -117,6 +118,7 @@ var locationRanges = [
 	}
 ];
 
+// Tests each location and determine the change in position.
 for (var i = 0; i < locationRanges.length; i++) {
 	var range = locationRanges[i];
 	range.i = i;
@@ -131,6 +133,7 @@ for (var i = 0; i < locationRanges.length; i++) {
 	}
 }
 
+// Update each landmark as the position of the robot is changed.
 function getLandmarkRange(position) {
 	for (var i = 0; i < locationRanges.length; i++) {
 		if (locationRanges[i].x[0] <= position.x && position.x <= locationRanges[i].x[1] && 

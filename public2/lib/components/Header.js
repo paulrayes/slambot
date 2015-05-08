@@ -1,3 +1,4 @@
+// Component that displays the current specs of the robot: this includes CPU, and RAM
 var React = require('react');
 
 var version = require('../../package.json').version;

@@ -6,6 +6,7 @@ module.exports = React.createClass({
 		return false;
 	},
 	render: function() {
+		// Basic artihmetic involving pythagorean theorem
 		var mapHeight = this.props.height;
 		var mapWidth = this.props.width;
 		var _this = this;

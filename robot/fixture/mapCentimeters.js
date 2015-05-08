@@ -1,4 +1,6 @@
 var startTime = Date.now();
+
+// Array that contains the location of each wall on our environment
 var wallLocations = [
 	[
 		[0, 0],
@@ -32,10 +34,7 @@ var wallLocations = [
 		[48, 0],
 		[48, 48]
 	],
-	//*********
-	//
-	// horizontal wall locations
-	// read from pauls map drawing bottom to top, left to right
+
 	[
 		[0, 0],
 		[48, 0]
@@ -74,7 +73,7 @@ var wallLocations = [
 	]
 ];
 
-//initiate grid, set all values to zero
+// Initiate grid, set all values to zero
 var grid = [];
 for (var x = -50; x <= 1250; x++) {
 	grid[x] = [];
@@ -83,7 +82,7 @@ for (var x = -50; x <= 1250; x++) {
 	}
 }
 
-//Convert from inches to cm. Each value in wallLocations array is multiplied by 2.54
+// Convert from inches to cm. Each value in wallLocations array is multiplied by 2.54
 var x0, x1, y0, y1;
 for (var k = 0, kk = wallLocations.length; k < kk; k++) {
 	x0 = wallLocations[k][0][0];// * 2.54;
@@ -91,7 +90,7 @@ for (var k = 0, kk = wallLocations.length; k < kk; k++) {
 	x1 = wallLocations[k][1][0];// * 2.54;
 	y1 = wallLocations[k][1][1];// * 2.54;
 
-	//within array, if x = x then its a vertical box, if y = y then its horizonal box
+	// Within array, if x = x then its a vertical box, if y = y then its horizonal box
 	if (x0 === x1) { //if both x's are equal, vertical
 
 		x0 = x0 - 0.375 * 2.54;
@@ -102,16 +101,11 @@ for (var k = 0, kk = wallLocations.length; k < kk; k++) {
 		y1 = y1 + 0.375 * 2.54;
 	}
 
-	x0 = Math.round(x0); //round up value to nearest whole value
+	// Round up value to nearest whole value
+	x0 = Math.round(x0);
 	x1 = Math.round(x1);
 	y0 = Math.round(y0);
 	y1 = Math.round(y1);
-	/*console.log({
-		x0: x0,
-		y0: y0,
-		x1: x1,
-		y1: y1
-	});*/
 
 	for (x = x0*10; x <= x1*10; x++) {
 		for (y = y0*10; y <= y1*10; y++) {
@@ -119,6 +113,7 @@ for (var k = 0, kk = wallLocations.length; k < kk; k++) {
 		}
 	}
 
+	// Location of wall based on lower left and top right of a block.
 	wallLocations[k][0][0] = x0;
 	wallLocations[k][0][1] = y0;
 	wallLocations[k][1][0] = x1;
@@ -126,20 +121,6 @@ for (var k = 0, kk = wallLocations.length; k < kk; k++) {
 
 }
 
-// Declare string variable with string constructor
-/*var checkString = '';
-for (var y = 125; y >= -5; y--) { //read left to right, top to bottom
-	for (var x = -5; x <= 125; x++) {
-		if (grid[x][y] === 1) {
-			checkString += 'X';
-		} else {
-			checkString += ' ';
-		}
-	}
-	checkString += '\n';
-}*/
-//console.log('This is verifying the occupancy grid');
-//console.log(checkString);
 
 module.exports = {
 	walls: wallLocations,

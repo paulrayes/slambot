@@ -1,13 +1,17 @@
+// Component that maps the estimated position
 var React = require('react');
 
 var EstimatedPositionStore = require('../../stores/EstimatedPositionStore');
 
+// Getting an initial position
 module.exports = React.createClass({
 	getInitialState: function() {
 		return {
 			points: EstimatedPositionStore.getAll()
 		};
 	},
+
+	// Changing the estimated position
 	componentDidMount: function() {
 		EstimatedPositionStore.on('change', this.onChange);
 	},
@@ -22,10 +26,6 @@ module.exports = React.createClass({
 		var key = 0;
 		prevPoint = {x:0,y:0};
 		points.forEach(function(point) {
-			// Calculate x, y, width, and height for this wall
-			//var width = Math.abs(wall[1][0] - wall[0][0]);
-			//var height = Math.abs(wall[1][1] - wall[0][1]);
-			//var x = Math.min(wall[0][0], wall[1][0]);
 
 			// Our map has the origin at the bottom left, SVG wants it in the
 			// top left, so need to convert all y values

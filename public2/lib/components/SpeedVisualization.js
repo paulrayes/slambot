@@ -1,3 +1,4 @@
+// File that creates and display the arrow interface on web interface.
 var React = require('react');
 
 var MotorStore = require('../stores/MotorStore');
@@ -6,10 +7,7 @@ var MotorStore = require('../stores/MotorStore');
 var mapHeight = 125;
 var mapWidth = 125;
 
-/*MotorStore.on('change', function() {
-	console.log(MotorStore.desiredSpeed);
-});*/
-
+// Creating an arrow component
 var Arrow = React.createClass({
 	getDefaultProps: function() {
 		return {
@@ -19,6 +17,8 @@ var Arrow = React.createClass({
 			strokeWidth: '1'
 		}
 	},
+
+	// Creating the head and tail of the arrow
 	render: function() {
 		var y = 50 - this.props.length;
 		var transform = 'rotate(' + this.props.angle + ' 50 50)';
@@ -34,6 +34,7 @@ var Arrow = React.createClass({
 	}
 });
 
+// Display the whole arrow interface based on the robot speed.
 module.exports = React.createClass({
 	getInitialState: function() {
 		return MotorStore.data;

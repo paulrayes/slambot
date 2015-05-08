@@ -1,9 +1,12 @@
+// File that determines the speed of the robot based on its heading.
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
+// Calling CalibratedImuStore.js and socket.js
 var ImuStore = require('./CalibratedImuStore');
 var io = require('./../socket');
 
+// Initializing variables
 var initialSpeed = {
 	x: 0,
 	y: 0
@@ -22,29 +25,24 @@ var zeroCount = {
 var accelerations = [{},{},{},{},{}];
 var index = 0;
 
-//var prevSpeedLength = 0;
-//var prevHeading = 0;
-
+// Creating an object from an event
 var SpeedStore = assign({}, EventEmitter.prototype, {
 	getAll: function() {
 		return speed;
 	}
 });
 
+
 ImuStore.on('change', function() {
 	// New latest data point
 	var prevIndex = index;
 	index = (++index) % 30;
 
+	// Assigning objects
 	var data = ImuStore.getAll();
 	var accel = data.accelTranslated;
-	//accel.length = Math.sqrt(Math.pow(accel.x, 2) + Math.pow(accel.y, 2));
-	//accel.x = accel.length * Math.cos(accel.heading)
 	accelerations[index] = accel;
-
 	var prev = accelerations[prevIndex];
-	//var accel = accelerations[index];
-	//console.log(accel);process.exit();
 	var deltaT = (accel.us - prev.us)/1e9;
 
 	if (isNaN(deltaT)) {
@@ -53,20 +51,19 @@ ImuStore.on('change', function() {
 		return;
 	}
 
-	/*speed = {
-		x: speed.x + prev.x + (accel.x - prev.x)/2*deltaT,
-		y: speed.y + prev.y + (accel.y - prev.y)/2*deltaT,
-		us: accel.us
-	};*/
-
-
 	speed.us = accel.us;
 
+	// If statement that increment the count based on the 
+	// value of acceleration in the x-direction
 	if (accel.x === 0) {
 		zeroCount.x++;
 	} else {
 		zeroCount.x = 0;
 	}
+
+	// If the count is greater or equal to 25, set the speed
+	// of both x and y to zero, else perform arithmetic to determine
+	// new value of the speed (x-direction).
 	if (zeroCount.x >= 25) {
 		speed.x = 0;
 		speed.y = 0;
@@ -74,11 +71,17 @@ ImuStore.on('change', function() {
 		speed.x = speed.x + (accel.x + prev.x)/2*deltaT;
 	}
 
+	// If statement that increment the count based on the 
+	// value of acceleration in the y-direction
 	if (accel.y === 0) {
 		zeroCount.y++;
 	} else {
 		zeroCount.y = 0;
 	}
+
+	// If the count is greater or equal to 25, set the speed
+	// of both x and y to zero, else perform arithmetic to determine
+	// new value of the speed (y-direction).
 	if (zeroCount.y >= 25) {
 		speed.x = 0;
 		speed.y = 0;
@@ -86,20 +89,17 @@ ImuStore.on('change', function() {
 		speed.y = speed.y + (accel.y + prev.y)/2*deltaT
 	}
 
+	// Arithmetic that determines new value of speed using pythagorean theorem
 	speed.length = Math.sqrt(Math.pow(speed.x, 2) + Math.pow(speed.y, 2));
-	//console.log(data.heading, speed.length);
 	speed.x = speed.length * Math.cos(data.heading);
 	speed.y = speed.length * Math.sin(data.heading);
 
-	//speed = newSpeed;
-	//console.log(speed.x, speed.y);
-	//console.log(zeroCount.x, zeroCount.y);
 	SpeedStore.emit('change');
 	if (index == 0) {
-		//process.exit();
 	}
 });
 
+// Update and sends to browser every 500ms
 var sendToBrowser = function() {
 	io.sockets.emit('speed:update', speed);
 	setTimeout(sendToBrowser, 500);

@@ -1,3 +1,4 @@
+// Component that 
 var React = require('react');
 
 var KnownMapStore = require('../../stores/KnownMapStore');

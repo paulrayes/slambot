@@ -1,3 +1,4 @@
+// This component display the last several readings of air quality.
 var React = require('react');
 
 module.exports = React.createClass({

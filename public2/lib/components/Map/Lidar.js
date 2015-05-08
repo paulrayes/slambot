@@ -1,5 +1,5 @@
+// Requires files to run
 var React = require('react');
-
 var EstimatedPositionStore = require('../../stores/EstimatedPositionStore');
 var LidarStore = require('../../stores/LidarStore');
 var LidarReading = require('./LidarReading');

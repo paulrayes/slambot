@@ -1,5 +1,6 @@
 var startTime = Date.now();
 
+// Initializing
 var wallLocations = [
 	[
 		[0, 0],

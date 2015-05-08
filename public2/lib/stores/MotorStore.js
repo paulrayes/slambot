@@ -1,15 +1,18 @@
+// Requires files to run
 var dispatcher = require('../dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var ls = require('local-storage');
 var socket = require('../socket');
 
+// Initializing
 var Motor = function() {
 	this.desiredSpeed = 0;
 	this.actualSpeed = 0;
 	this.actualRpm = 0;
 };
 
+// Initializing
 var data = {
 	left: new Motor(),
 	right: new Motor(),
@@ -23,6 +26,7 @@ var data = {
 	actualAngle: 0
 };
 
+// Creating an object from an event
 var MotorStore = assign({}, EventEmitter.prototype, {
 	data: data,
 	setEnabled: function(enabled) {
@@ -35,16 +39,22 @@ var MotorStore = assign({}, EventEmitter.prototype, {
 	isEnabled: function() {
 		return ls.get('motorStore:enabled') || false;
 	},
+
+	// Function that perform basic squareroot and power arithmetics
 	setVectors: function() {
 		data.desiredSpeedLength = Math.sqrt(Math.pow(data.desiredSpeed, 2) + Math.pow(data.desiredDirection, 2));
 		data.desiredAngle = Math.atan2(data.desiredDirection, data.desiredSpeed)*180/Math.PI;
 		data.actualSpeedLength = Math.sqrt(Math.pow(data.actualSpeed, 2) + Math.pow(data.actualDirection, 2));
 		data.actualAngle = Math.atan2(data.actualDirection, data.actualSpeed)*180/Math.PI;
 	},
+
+	// Updating motor value
 	updateMotors: function() {
 		this.setVectors();
 		this.emitChange();
 	},
+
+	// Emitting the desired speed and the desired direction.
 	emitChange: function() {
 		socket.emit('motors:update', {
 			desiredSpeed: data.desiredSpeed,
@@ -56,6 +66,7 @@ var MotorStore = assign({}, EventEmitter.prototype, {
 });
 
 socket.on('motors:update', function(newData) {
+	// Storing values of speed, and direction
 	MotorStore.data.desiredSpeed = newData.desiredSpeed;
 	MotorStore.data.desiredDirection = newData.desiredDirection;
 
@@ -73,7 +84,7 @@ socket.on('motors:update', function(newData) {
 	MotorStore.setVectors();
 	MotorStore.emit('change');
 });
-
+// An event
 window.addEventListener('keydown', function(event) {
 	var keyCodes = {
 		87: 'w',
@@ -82,9 +93,11 @@ window.addEventListener('keydown', function(event) {
 		68: 'd'
 	};
 
+	// If statement that updates the value to be stored
 	var key = keyCodes[event.which];
 	if (typeof key !== 'undefined') {
 		if (key === 'w') {
+
 			if (MotorStore.data.desiredSpeed !== 100) {
 				MotorStore.data.desiredSpeed = 100;
 				MotorStore.updateMotors();
@@ -108,6 +121,7 @@ window.addEventListener('keydown', function(event) {
 	}
 });
 
+// An event
 window.addEventListener('keyup', function(event) {
 	var keyCodes = {
 		87: 'w',
@@ -116,6 +130,7 @@ window.addEventListener('keyup', function(event) {
 		68: 'd'
 	};
 
+	// Update the value to be stored
 	var key = keyCodes[event.which];
 	if (typeof key !== 'undefined') {
 		if (key === 'w' || key === 's') {
@@ -134,6 +149,7 @@ window.addEventListener('keyup', function(event) {
 
 (function() {
 	var lastTimestamp = 0;
+
 
 	setInterval(function() {
 		var gamepad = navigator.getGamepads && navigator.getGamepads()[0];

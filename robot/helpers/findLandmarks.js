@@ -16,6 +16,7 @@
  *     - highedge: opposite of lowedge
  */
 
+// Creating a funtion that get readings
 function getReading(readings, i) {
 	while (i < 0) {
 		i = i + readings.length;
@@ -35,7 +36,6 @@ function getLandmarkType(readings, i, maxDistance) {
 	}
 
 	if (i === 12) {
-		//console.log(readings[i].angle, getReading(readings, i-2).distance, getReading(readings, i-1).distance, readings[i].distance, getReading(readings, i+1).distance, getReading(readings, i+2).distance);
 	}
 
 	// Edges appear as corners as well so look for edges first
@@ -85,7 +85,7 @@ module.exports = function(readings, maxDistance) {
 	for (var i = 0; i < readings.length; i++) {
 		var landmarkType = getLandmarkType(readings, i, maxDistance);
 		if (landmarkType !== 'none') {
-			//console.log(readings[i].angle, readings[i].distance, landmarkType);
+
 			var difference = null;
 			if (landmarkType === 'lowedge') {
 				difference = readings[i+1] - readings[i];

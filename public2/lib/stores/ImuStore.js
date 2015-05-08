@@ -1,8 +1,10 @@
+// Requires files to run
 var dispatcher = require('../dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var socket = require('../socket');
 
+// Initializing
 var data = {
 	accel: {
 		x: 0,
@@ -27,6 +29,7 @@ var data = {
 	}
 };
 
+// Creating an event
 var ImuStore = assign({}, EventEmitter.prototype, {
 	data: data
 });
